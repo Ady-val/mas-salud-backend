@@ -37,7 +37,10 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/mas-salud-backend-e2e/**/*"]
+      "exclude": [
+        "apps/mas-salud-backend-e2e/**/*",
+        "mas-salud-backend-e2e/**/*"
+      ]
     }
   ]
 }

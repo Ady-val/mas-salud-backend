@@ -41,6 +41,6 @@ export class InstitutionsController {
   @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.institutionsService.remove(id);
-    return { message: 'Institución marcada como eliminada (soft delete)' };
+    return { message: 'Institution deleted' };
   }
 }

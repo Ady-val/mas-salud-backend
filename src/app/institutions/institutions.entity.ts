@@ -22,6 +22,6 @@ export class Institution {
   })
   updatedAt: Date;
 
-  @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  @DeleteDateColumn({ type: 'timestamp', nullable: true, select: false })
   deletedAt: Date | null;
 }

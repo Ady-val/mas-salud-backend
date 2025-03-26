@@ -22,7 +22,11 @@ export class InstitutionsService {
   }
 
   async findOne(id: string): Promise<Institution> {
-    return await this.institutionRepository.findOne({ where: { id } });
+    const institution = await this.institutionRepository.findOne({ where: { id } });
+    if (!institution) {
+      throw new Error('Institution not found');
+    }
+    return institution;
   }
 
   async update(id: string, updateInstitutionDto: UpdateInstitutionDto): Promise<Institution> {

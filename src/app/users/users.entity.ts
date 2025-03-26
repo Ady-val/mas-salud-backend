@@ -11,19 +11,19 @@ import { Institution } from '../institutions/institutions.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ unique: true })
-  username: string;
+  username!: string;
 
   @Column()
-  password: string;
+  password!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ nullable: true, name: 'idInstitution' })
-  institutionId: string | null;
+  institutionId!: string | null;
 
   @ManyToOne(() => Institution, (institution) => institution.users, {
     lazy: true,
@@ -31,18 +31,18 @@ export class User {
     onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'idInstitution' })
-  institution: Institution | null;
+  institution!: Institution | null;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
-  deletedAt: Date | null;
+  deletedAt!: Date | null;
 }

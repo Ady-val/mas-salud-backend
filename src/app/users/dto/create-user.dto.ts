@@ -9,7 +9,7 @@ export class CreateUserDto {
   })
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  email!: string;
 
   @ApiProperty({
     example: 'PasswordSeguro123',
@@ -20,7 +20,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(50)
-  password: string;
+  password!: string;
 
   @ApiProperty({
     example: 'Admin',

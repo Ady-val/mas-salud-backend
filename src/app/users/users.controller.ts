@@ -23,34 +23,34 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear nuevo usuario' })
-  @ApiResponse({ status: 201, description: 'Usuario creado exitosamente' })
+  @ApiOperation({ summary: 'Create user' })
+  @ApiResponse({ status: 201, description: 'User created' })
   async create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los usuarios activos' })
+  @ApiOperation({ summary: 'Get all the users' })
   async findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Obtener usuario por ID' })
+  @ApiOperation({ summary: 'Get user by ID' })
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Actualizar usuario' })
+  @ApiOperation({ summary: 'Update user' })
   async update(@Param('id', ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Eliminar usuario (soft delete)' })
+  @ApiOperation({ summary: 'Delete user (soft delete)' })
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.usersService.remove(id);
-    return { message: 'Usuario marcado como eliminado' };
+    return { message: 'User deleted' };
   }
 }

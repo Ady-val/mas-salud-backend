@@ -10,14 +10,14 @@ export class InstitutionsController {
   constructor(private readonly institutionsService: InstitutionsService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear nueva institución' })
-  @ApiResponse({ status: 201, description: 'Institución creada exitosamente' })
+  @ApiOperation({ summary: 'Create new institution' })
+  @ApiResponse({ status: 201, description: 'The institution has been successfully created.' })
   async create(@Body() createInstitutionDto: CreateInstitutionDto) {
     return this.institutionsService.create(createInstitutionDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todas las instituciones activas' })
+  @ApiOperation({ summary: 'Get all institutions' })
   async findAll() {
     return this.institutionsService.findAll();
   }

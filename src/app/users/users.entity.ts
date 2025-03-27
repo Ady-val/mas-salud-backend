@@ -7,42 +7,46 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Institution } from '../institutions/institutions.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
+  @Exclude()
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id: string;
 
   @Column({ unique: true })
-  username!: string;
+  username: string;
 
-  @Column()
-  password!: string;
+  @Exclude()
+  @Column({ select: false })
+  password: string;
 
   @Column()
   name!: string;
 
+  @Exclude()
   @Column({ nullable: true, name: 'idInstitution' })
-  institutionId!: string | null;
+  institutionId: string | null;
 
   @ManyToOne(() => Institution, (institution) => institution.users, {
-    lazy: true,
     nullable: true,
     onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'idInstitution' })
-  institution!: Institution | null;
+  institution: Institution | null;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt!: Date;
+  createdAt: Date;
 
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
-  updatedAt!: Date;
+  updatedAt: Date;
 
-  @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  @Exclude()
+  @DeleteDateColumn({ type: 'timestamp', nullable: true, select: false })
   deletedAt!: Date | null;
 }

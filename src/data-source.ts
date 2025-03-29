@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import { User } from './app/users/users.entity';
 import { Institution } from './app/institutions/institutions.entity';
 import { SessionEntity } from './app/auth/sessions/sessions.entity';
-import { migrations } from '../migrations';
+import { Beneficiary } from './app/beneficiaries/beneficiaries.entity';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -11,8 +11,8 @@ export const AppDataSource = new DataSource({
   username: 'massalud',
   password: 'contra123',
   database: 'mas_salud',
-  entities: [User, Institution, SessionEntity],
-  migrations,
+  entities: [User, Institution, SessionEntity, Beneficiary],
+  migrations: ['../migrations/*.ts'],
   synchronize: false,
   logging: ['error'],
   // logging: ['query', 'error', 'schema'],

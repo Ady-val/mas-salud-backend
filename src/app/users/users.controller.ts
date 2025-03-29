@@ -7,18 +7,17 @@ import {
   Patch,
   Delete,
   ParseUUIDPipe,
-  // UseGuards,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { SessionGuard } from 'app/auth/guard/session.guard';
 
 @ApiTags('Users')
-@ApiBearerAuth()
+@UseGuards(SessionGuard)
 @Controller('users')
-// @UseGuards(JwtAuthGuard) // Protege todos los endpoints
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

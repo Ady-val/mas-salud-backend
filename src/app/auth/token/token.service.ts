@@ -9,7 +9,13 @@ export class TokenService {
   constructor(private readonly jwt: JwtService) {}
 
   generateAccessToken(user: User): string {
-    const payload = { username: user.username, sub: user.id, institutionId: user.institutionId };
+    const payload = {
+      username: user.username,
+      sub: user.id,
+      institutionId: user.institutionId,
+      role: user.role,
+      isAdmin: user.isAdmin,
+    };
     return this.jwt.sign(payload);
   }
 

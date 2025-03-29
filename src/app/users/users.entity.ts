@@ -32,6 +32,9 @@ export class User {
   @Column({ type: 'json', nullable: true })
   role?: string[];
 
+  @Column()
+  isAdmin: boolean;
+
   @ManyToOne(() => Institution, (institution) => institution.users, {
     nullable: true,
     onDelete: 'SET NULL',

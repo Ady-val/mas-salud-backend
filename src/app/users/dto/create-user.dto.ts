@@ -37,4 +37,12 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   institutionId: string | null;
+
+  @ApiProperty({
+    description: 'Roles of the user',
+    required: false,
+  })
+  @IsOptional()
+  @IsString({ each: true })
+  role: string[];
 }

@@ -14,5 +14,6 @@ export const AppDataSource = new DataSource({
   entities: [User, Institution, SessionEntity],
   migrations,
   synchronize: false,
-  logging: ['query', 'error', 'schema'],
+  logging: ['error'],
+  // logging: ['query', 'error', 'schema'],
 });

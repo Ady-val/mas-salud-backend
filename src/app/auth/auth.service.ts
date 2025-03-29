@@ -27,7 +27,6 @@ export class AuthService {
       throw new UnauthorizedException(HTTP_MESSAGES.CLIENT_ERROR.INVALID_CREDENTIALS);
     }
 
-    // const accessToken = this.jwt.generateAccessToken(user);
     const { token: accessToken } = await this.sessionService.createSession(user);
 
     return {

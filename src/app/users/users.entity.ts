@@ -29,6 +29,9 @@ export class User {
   @Column({ nullable: true, name: 'idInstitution' })
   institutionId: string | null;
 
+  @Column({ type: 'json', nullable: true })
+  role?: string[];
+
   @ManyToOne(() => Institution, (institution) => institution.users, {
     nullable: true,
     onDelete: 'SET NULL',

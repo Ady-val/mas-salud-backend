@@ -17,7 +17,8 @@ export class CreateBeneficiariesTable1743271616872 implements MigrationInterface
         \`active\` BOOLEAN NOT NULL DEFAULT true,
         \`identificationCode\` VARCHAR(50) NOT NULL UNIQUE,
         \`createdAt\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        \`updatedAt\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        \`updatedAt\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        \`deletedAt\` timestamp NULL
       ) ENGINE=InnoDB;
     `);
   }

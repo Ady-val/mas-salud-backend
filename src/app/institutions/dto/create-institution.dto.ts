@@ -11,7 +11,7 @@ export class CreateInstitutionDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
-  name!: string;
+  name: string;
 
   @ApiProperty({
     example: 'Hospital público de la ciudad',

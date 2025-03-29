@@ -7,6 +7,7 @@ import { UsersModule } from './app/users/users.module';
 import { HttpExceptionFilter } from 'common/filters/http-exception.filter';
 import { AppDataSource } from 'data-source';
 import { CaslAbilityFactory } from 'app/auth/casl/casl-ability.factory';
+import { BeneficiariesModule } from 'app/beneficiaries/beneficiaries.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CaslAbilityFactory } from 'app/auth/casl/casl-ability.factory';
     AuthModule,
     UsersModule,
     InstitutionsModule,
+    BeneficiariesModule,
   ],
   controllers: [],
   providers: [

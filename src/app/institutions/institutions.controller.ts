@@ -1,10 +1,22 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+  ParseUUIDPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { InstitutionsService } from './institutions.service';
 import { CreateInstitutionDto } from './dto/create-institution.dto';
 import { UpdateInstitutionDto } from './dto/update-institution.dto';
+import { SessionGuard } from 'app/auth/guard/session.guard';
 
 @ApiTags('Institutions')
+@UseGuards(SessionGuard)
 @Controller('institutions')
 export class InstitutionsController {
   constructor(private readonly institutionsService: InstitutionsService) {}

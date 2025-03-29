@@ -26,6 +26,7 @@ export class CreateUserTable1743005415664 implements MigrationInterface {
   }
 
   async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`ALTER TABLE \`user\` DROP FOREIGN KEY \`FK_institution_user\``);
     await queryRunner.query(`DROP TABLE \`user\``);
     await queryRunner.query(`DROP TABLE \`institution\``);
   }

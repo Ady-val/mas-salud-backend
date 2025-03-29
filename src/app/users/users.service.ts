@@ -4,7 +4,7 @@ import { User } from './users.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PasswordService } from 'app/auth/password.service';
+import { PasswordService } from 'app/auth/password/password.service';
 import { plainToInstance } from 'class-transformer';
 import { UserResponse } from './dto/user-response.dto';
 
@@ -16,10 +16,6 @@ export class UsersService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-
-  private async getUserByUsername(username: string): Promise<User | null> {
-    return await this.userRepository.findOne({ where: { username } });
-  }
 
   private async getUserById(id: string): Promise<UserResponse> {
     const user = await this.userRepository
@@ -45,20 +41,14 @@ export class UsersService {
     });
   }
 
+  async getUserByUsername(username: string): Promise<User | null> {
+    return await this.userRepository.findOne({ where: { username } });
+  }
+
   async create(createUserDto: CreateUserDto): Promise<UserResponse> {
     const userExist = await this.getUserByUsername(createUserDto.username);
     if (userExist) {
       throw new ConflictException('User already exists');
-    }
-
-    if (createUserDto.institutionId) {
-      const institution = await this.userRepository
-        .createQueryBuilder('institution')
-        .where('institution.id = :id', { id: createUserDto.institutionId })
-        .getOne();
-      if (!institution) {
-        throw new NotFoundException('Institution not found');
-      }
     }
 
     const hashedPassword = await this.passwordService.hashPassword(createUserDto.password);

@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { InstitutionsModule } from './institutions/institutions.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { SessionGuard } from './auth/guard/session.guard';
 
 @Module({
   imports: [
@@ -21,10 +24,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         softDelete: true,
       },
     }),
+    AuthModule,
     InstitutionsModule,
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: SessionGuard,
+    },
+  ],
 })
 export class AppModule {}

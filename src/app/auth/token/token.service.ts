@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from 'app/users/users.entity';
 import { JwtService } from '@nestjs/jwt';
-import { HTTP_MESSAGES } from 'app/constants/http-messages.constants';
+import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
 import { TokenPayloadDto } from './dto/token-payload.dto';
 
 @Injectable()

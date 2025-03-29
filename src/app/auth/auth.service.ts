@@ -4,7 +4,7 @@ import { LoginDto } from './dto/login.dto';
 import { PasswordService } from './password/password.service';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { SessionService } from './sessions/session.service';
-import { HTTP_MESSAGES } from 'app/constants/http-messages.constants';
+import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
 
 @Injectable()
 export class AuthService {

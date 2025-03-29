@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { SessionService } from '../sessions/session.service';
-import { HTTP_MESSAGES } from 'app/constants/http-messages.constants';
+import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
 import { TokenService } from '../token/token.service';
 
 @Injectable()

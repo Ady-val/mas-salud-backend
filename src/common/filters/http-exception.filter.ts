@@ -1,5 +1,5 @@
 import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
-import { HTTP_MESSAGES } from 'app/constants/http-messages.constants';
+import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
 import { Request, Response } from 'express';
 
 @Catch()

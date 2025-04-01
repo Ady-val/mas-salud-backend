@@ -12,10 +12,9 @@ export class SessionGuard implements CanActivate {
   ) {}
 
   private extractTokenFromHeader(request: Request): string | null {
-    const authHeader = request.headers?.authorization;
     const cookieHeader: Record<string, string> = request.cookies;
 
-    if (!authHeader) return null;
+    if (!cookieHeader) return null;
 
     const access_token = cookieHeader['access_token'] as string | undefined;
     if (!access_token) return null;

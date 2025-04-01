@@ -13,10 +13,14 @@ export class SessionGuard implements CanActivate {
 
   private extractTokenFromHeader(request: Request): string | null {
     const authHeader = request.headers?.authorization;
+    const cookieHeader: Record<string, string> = request.cookies;
+
     if (!authHeader) return null;
 
-    const [type, token] = authHeader.split(' ');
-    return type === 'Bearer' ? token : null;
+    const access_token = cookieHeader['access_token'] as string | undefined;
+    if (!access_token) return null;
+
+    return access_token;
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

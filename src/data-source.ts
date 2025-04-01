@@ -12,6 +12,7 @@ export const AppDataSource = new DataSource({
   password: 'contra123',
   database: 'mas_salud',
   entities: [User, Institution, SessionEntity, Beneficiary],
+  // migrations: ['migrations/*.ts'],
   migrations: ['../migrations/*.ts'],
   synchronize: false,
   logging: ['error'],

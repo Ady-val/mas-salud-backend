@@ -30,6 +30,9 @@ export class Beneficiary {
   @Column({ type: 'text', nullable: true })
   internalNumber?: string;
 
+  @Column({ type: 'text' })
+  colony: string;
+
   @Column({ length: 5 })
   postalCode: string;
 

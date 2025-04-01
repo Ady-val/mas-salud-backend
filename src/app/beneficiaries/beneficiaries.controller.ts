@@ -7,6 +7,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -33,11 +34,18 @@ export class BeneficiariesController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all beneficiaries' })
+  @ApiOperation({ summary: 'Get beneficiaries' })
   @ApiResponse({ status: 200, description: 'List of beneficiaries' })
   @Roles({ action: Action.Read, subject: Modules.Beneficiaries })
-  async findAll() {
-    return this.beneficiariesService.findAll();
+  async findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('name') name?: string,
+    @Query('lastName') lastName?: string,
+    @Query('gender') gender?: 'Male' | 'Female',
+    @Query('curp') curp?: string,
+  ) {
+    return this.beneficiariesService.findAll(page, limit, { name, lastName, gender, curp });
   }
 
   @Get(':id')

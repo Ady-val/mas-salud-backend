@@ -58,16 +58,16 @@ export class BeneficiariesService {
     const query = this.beneficiaryRepository.createQueryBuilder('beneficiary');
 
     if (filters?.name) {
-      query.andWhere('beneficiary.name LIKE :name', { name: `%${filters.name}%` });
+      query.andWhere('beneficiary.name LIKE :name', { name: `${filters.name}%` });
     }
     if (filters?.lastName) {
-      query.andWhere('beneficiary.lastName LIKE :lastName', { lastName: `%${filters.lastName}%` });
+      query.andWhere('beneficiary.lastName LIKE :lastName', { lastName: `${filters.lastName}%` });
     }
     if (filters?.gender) {
       query.andWhere('beneficiary.gender = :gender', { gender: filters.gender });
     }
     if (filters?.curp) {
-      query.andWhere('beneficiary.curp LIKE :curp', { curp: `%${filters.curp}%` });
+      query.andWhere('beneficiary.curp LIKE :curp', { curp: `${filters.curp}%` });
     }
 
     const count = await query.getCount();

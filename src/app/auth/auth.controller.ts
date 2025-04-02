@@ -10,7 +10,6 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  // @UseGuards(LocalStrategy)
   async login(
     @Body()
     loginDto: LoginDto,

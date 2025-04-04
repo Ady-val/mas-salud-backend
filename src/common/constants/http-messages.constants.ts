@@ -9,4 +9,8 @@ export const HTTP_MESSAGES = {
     INTERNAL_SERVER_ERROR: 'Internal server error',
     INVALID_REQUEST: 'Invalid request',
   },
+  BENEFICIARIES_ERROR: {
+    CURP_EXISTS: 'Beneficiary with this CURP already exists',
+    CURP_NOT_FOUND: 'Beneficiary with this CURP not found',
+  },
 };

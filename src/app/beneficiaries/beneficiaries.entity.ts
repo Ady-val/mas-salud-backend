@@ -21,6 +21,9 @@ export class Beneficiary {
   @Column({ length: 18 })
   curp: string;
 
+  @Column({ length: 10 })
+  phone: string;
+
   @Column({ type: 'text' })
   street: string;
 

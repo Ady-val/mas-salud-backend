@@ -58,6 +58,18 @@ export class CreateBeneficiaryDto {
   curp: string;
 
   @ApiProperty({
+    example: '5555555555',
+    description: 'Teléfono de la persona beneficiaria',
+    required: true,
+    maxLength: 10,
+  })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(10)
+  @IsNumberString()
+  phone: string;
+
+  @ApiProperty({
     example: 'Calle Falsa',
     description: 'Calle de la persona beneficiaria',
     required: true,
@@ -83,6 +95,15 @@ export class CreateBeneficiaryDto {
   @IsOptional()
   @IsNumberString()
   internalNumber?: string;
+
+  @ApiProperty({
+    example: 'Colonia Centro',
+    description: 'Colonia de la persona beneficiaria',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  colony: string;
 
   @ApiProperty({
     example: '12345',

@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Beneficiary } from './beneficiaries.entity';
 import { Repository } from 'typeorm';
@@ -6,6 +6,9 @@ import { CreateBeneficiaryDto } from './dto/create-beneficiary.dto';
 import { v5 as uuidv5 } from 'uuid';
 import { plainToInstance } from 'class-transformer';
 import { ResponseBeneficiariesDto } from './dto/benificiaries.dto';
+import { CustomHttpException } from 'common/formats/http-exception.formats';
+import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
+import { HTTP_STATUS } from 'common/constants/http-status.constants';
 
 @Injectable()
 export class BeneficiariesService {
@@ -30,7 +33,13 @@ export class BeneficiariesService {
     });
 
     if (CURPExists) {
-      throw new ConflictException('Beneficiary with this CURP already exists');
+      throw CustomHttpException(
+        {
+          field: 'curp',
+          error: HTTP_MESSAGES.BENEFICIARIES_ERROR.CURP_EXISTS,
+        },
+        HTTP_STATUS.CLIENT_ERROR.CONFLICT,
+      );
     }
 
     const namespace = uuidv5.URL;
@@ -96,7 +105,13 @@ export class BeneficiariesService {
       });
 
       if (CURPExists) {
-        throw new ConflictException('Beneficiary with this CURP already exists');
+        throw CustomHttpException(
+          {
+            field: 'curp',
+            error: HTTP_MESSAGES.BENEFICIARIES_ERROR.CURP_EXISTS,
+          },
+          HTTP_STATUS.CLIENT_ERROR.CONFLICT,
+        );
       }
     }
 

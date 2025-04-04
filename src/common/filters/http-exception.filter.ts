@@ -1,20 +1,26 @@
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
 import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
 import { Request, Response } from 'express';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: any, host: ArgumentsHost) {
+  catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const status = (exception?.status || 500) as number;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const message = (exception?.response?.message ||
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      exception?.message ||
-      HTTP_MESSAGES.SERVER_ERROR.INTERNAL_SERVER_ERROR) as string;
+
+    let status = 500;
+    let message: string | string[] | object = HTTP_MESSAGES.SERVER_ERROR.INTERNAL_SERVER_ERROR;
+
+    if (exception instanceof HttpException) {
+      status = exception.getStatus();
+      const res = exception.getResponse();
+      console.log('res', res);
+      message = res;
+      // message = typeof res === 'string' ? res : (res as { message: string | string[] }).message || message;
+    } else if (exception instanceof Error) {
+      message = exception.message;
+    }
 
     if (status === 500) {
       response.status(status).json({

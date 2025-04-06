@@ -9,6 +9,7 @@ import { ResponseBeneficiariesDto } from './dto/benificiaries.dto';
 import { CustomHttpException } from 'common/formats/http-exception.formats';
 import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
 import { HTTP_STATUS } from 'common/constants/http-status.constants';
+import { UpdateBeneficiaryDto } from './dto/update-beneficiary.dto';
 
 @Injectable()
 export class BeneficiariesService {
@@ -22,9 +23,7 @@ export class BeneficiariesService {
     if (!beneficiary) {
       throw new NotFoundException('Beneficiary not found');
     }
-    return plainToInstance(Beneficiary, beneficiary, {
-      excludeExtraneousValues: true,
-    });
+    return plainToInstance(Beneficiary, beneficiary);
   }
 
   async create(beneficiary: CreateBeneficiaryDto): Promise<Beneficiary> {
@@ -83,6 +82,7 @@ export class BeneficiariesService {
     const totalPages = Math.ceil(count / limit);
 
     const beneficiaries = await query
+      .orderBy('beneficiary.createdAt', 'DESC')
       .skip((page - 1) * limit)
       .take(limit)
       .getMany();
@@ -96,7 +96,7 @@ export class BeneficiariesService {
     });
   }
 
-  async update(id: string, beneficiary: Partial<CreateBeneficiaryDto>): Promise<Beneficiary> {
+  async update(id: string, beneficiary: Partial<UpdateBeneficiaryDto>): Promise<Beneficiary> {
     const existingBeneficiary = await this.findOneById(id);
 
     if (beneficiary.curp && beneficiary.curp !== existingBeneficiary.curp) {

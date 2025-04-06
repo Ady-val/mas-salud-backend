@@ -10,14 +10,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
 
     let status = 500;
-    let message: string | string[] | object = HTTP_MESSAGES.SERVER_ERROR.INTERNAL_SERVER_ERROR;
+    let message: unknown = HTTP_MESSAGES.SERVER_ERROR.INTERNAL_SERVER_ERROR;
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const res = exception.getResponse();
-      console.log('res', res);
-      message = res;
-      // message = typeof res === 'string' ? res : (res as { message: string | string[] }).message || message;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      message = typeof res === 'object' && 'message' in res ? res.message : res;
     } else if (exception instanceof Error) {
       message = exception.message;
     }

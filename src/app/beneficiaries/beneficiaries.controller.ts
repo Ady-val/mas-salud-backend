@@ -18,6 +18,7 @@ import { Roles } from 'app/auth/decorators/abilities.decorator';
 import { Action } from 'common/enum/action.enum';
 import { Modules } from 'common/enum/modules.enum';
 import { CreateBeneficiaryDto } from './dto/create-beneficiary.dto';
+import { UpdateBeneficiaryDto } from './dto/update-beneficiary.dto';
 
 @ApiTags('Beneficiaries')
 @UseGuards(SessionGuard, PermissionGuard)
@@ -62,7 +63,7 @@ export class BeneficiariesController {
   @Roles({ action: Action.Update, subject: Modules.Beneficiaries })
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateBeneficiaryDto: CreateBeneficiaryDto,
+    @Body() updateBeneficiaryDto: UpdateBeneficiaryDto,
   ) {
     return this.beneficiariesService.update(id, updateBeneficiaryDto);
   }

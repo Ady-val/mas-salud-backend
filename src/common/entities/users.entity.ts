@@ -6,8 +6,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Institution } from '../institutions/institutions.entity';
 import { Exclude } from 'class-transformer';
+import { Institution } from './institutions.entity';
 
 @Entity()
 export class User {

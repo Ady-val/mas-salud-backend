@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SessionEntity } from './sessions.entity';
+import { SessionEntity } from '../../../common/entities/sessions.entity';
 import { TokenService } from '../token/token.service';
-import { User } from 'app/users/users.entity';
+import { User } from 'common/entities/users.entity';
 
 @Injectable()
 export class SessionService {

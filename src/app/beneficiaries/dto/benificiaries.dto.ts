@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { Beneficiary } from '../beneficiaries.entity';
+import { Beneficiary } from '../../../common/entities/beneficiaries.entity';
 
 export class ResponseBeneficiariesDto {
   @Expose()

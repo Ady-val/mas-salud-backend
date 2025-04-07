@@ -6,7 +6,7 @@ import {
   PureAbility,
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { User } from 'app/users/users.entity';
+import { User } from 'common/entities/users.entity';
 import { Action } from 'common/enum/action.enum';
 import { Modules } from 'common/enum/modules.enum';
 import { Role } from 'common/enum/role.enum';
@@ -34,10 +34,10 @@ export class CaslAbilityFactory {
       can(Action.Create, Modules.MedicalSpecialists);
       can(Action.Update, Modules.MedicalSpecialists);
       can(Action.Delete, Modules.MedicalSpecialists);
-      can(Action.Read, Modules.Medications);
-      can(Action.Create, Modules.Medications);
-      can(Action.Update, Modules.Medications);
-      can(Action.Delete, Modules.Medications);
+      can(Action.Read, Modules.Products);
+      can(Action.Create, Modules.Products);
+      can(Action.Update, Modules.Products);
+      can(Action.Delete, Modules.Products);
     }
 
     return build({

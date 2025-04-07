@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { Institution } from 'app/institutions/institutions.entity';
+import { Institution } from '/common/entities/institutions.entity';
 
 export class CreateInstitutionAndUserAdmin1743272214825 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

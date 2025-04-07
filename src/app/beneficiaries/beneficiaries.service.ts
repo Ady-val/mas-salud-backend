@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Beneficiary } from './beneficiaries.entity';
+import { Beneficiary } from '../../common/entities/beneficiaries.entity';
 import { Repository } from 'typeorm';
 import { CreateBeneficiaryDto } from './dto/create-beneficiary.dto';
 import { v5 as uuidv5 } from 'uuid';

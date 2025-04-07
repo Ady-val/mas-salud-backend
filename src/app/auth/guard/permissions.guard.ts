@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { CaslAbilityFactory } from '../casl/casl-ability.factory';
 import { CHECK_ABILITY, RequiredRule } from '../decorators/abilities.decorator';
 import { Request } from 'express';
-import { User } from 'app/users/users.entity';
+import { User } from 'common/entities/users.entity';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {

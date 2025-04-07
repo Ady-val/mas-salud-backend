@@ -1,4 +1,4 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException, Logger } from '@nestjs/common';
 import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
 import { Request, Response } from 'express';
 
@@ -22,6 +22,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     if (status === 500) {
+      Logger.error(message);
       response.status(status).json({
         statusCode: status,
         message: 'Server error',

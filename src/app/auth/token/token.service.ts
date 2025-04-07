@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from 'app/users/users.entity';
+import { User } from 'common/entities/users.entity';
 import { JwtService } from '@nestjs/jwt';
 import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
 import { TokenPayloadDto } from './dto/token-payload.dto';

@@ -3,7 +3,7 @@ export enum Modules {
   Roles = 'Roles',
   Institutions = 'Institutions',
   Beneficiaries = 'Beneficiaries',
-  Medications = 'Medications',
+  Products = 'Products',
   MedicalSpecialists = 'MedicalSpecialists',
   Dashboard = 'Dashboard',
 }

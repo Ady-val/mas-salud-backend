@@ -9,7 +9,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { EProductForm, EProductUnit } from 'common/enum/products.enum';
+import { EProductForm, EProductUnit } from './../../common/enum/products.enum';
 import { Exclude } from 'class-transformer';
 
 @Entity('products')

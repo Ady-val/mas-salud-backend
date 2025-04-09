@@ -4,6 +4,11 @@ export enum EProductUnit {
   ML = 'ml',
   MCG = 'mcg',
   MG_ML = 'mg/ml',
+  G = 'g',
+  G_5ML = 'g/5ml',
+  G_ML = 'g/ml',
+  L = 'l',
+  UI = 'ui',
 }
 
 export enum EProductForm {

@@ -1,5 +1,13 @@
 import { Entity, Column, PrimaryGeneratedColumn, DeleteDateColumn } from 'typeorm';
-import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumberString,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MaxLength,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { EProductForm, EProductUnit } from 'common/enum/products.enum';
 import { Exclude } from 'class-transformer';
@@ -26,7 +34,7 @@ export class Product {
   brand: string;
 
   @Column()
-  @IsString()
+  @IsNumberString()
   @IsNotEmpty()
   @ApiProperty({ example: '500', description: 'Dosis del producto' })
   dosage: string;

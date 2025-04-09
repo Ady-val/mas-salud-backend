@@ -43,9 +43,9 @@ export class ProductsController {
     @Query('limit') limit: number = 10,
     @Query('name') name?: string,
     @Query('brand') brand?: string,
-    @Query('lot_number') lot_number?: string,
+    @Query('lotNumber') lotNumber?: string,
   ) {
-    return this.productsService.findAll(page, limit, { name, brand, lot_number });
+    return this.productsService.findAll(page, limit, { name, brand, lotNumber });
   }
 
   @Get(':id')

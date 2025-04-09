@@ -44,7 +44,7 @@ export class ProductsService {
     if (existingProduct) {
       throw CustomHttpException(
         {
-          field: 'lot_number',
+          field: 'lotNumber',
           error: HTTP_MESSAGES.PRODUCTS_ERROR.ALREADY_EXISTS,
         },
         HTTP_STATUS.CLIENT_ERROR.CONFLICT,
@@ -72,7 +72,7 @@ export class ProductsService {
       brand: string;
       form: string;
       unit: string;
-      lot_number: string;
+      lotNumber: string;
     }>,
   ): Promise<ResponseProductsDto> {
     const query = this.productRepository.createQueryBuilder('product');
@@ -89,9 +89,9 @@ export class ProductsService {
     if (filters?.unit) {
       query.andWhere('product.unit = :unit', { unit: filters.unit });
     }
-    if (filters?.lot_number) {
-      query.andWhere('product.lot_number LIKE :lot_number', {
-        lot_number: `${filters.lot_number}%`,
+    if (filters?.lotNumber) {
+      query.andWhere('product.lotNumber LIKE :lotNumber', {
+        lotNumber: `${filters.lotNumber}%`,
       });
     }
 
@@ -134,7 +134,7 @@ export class ProductsService {
       if (lotExists) {
         throw CustomHttpException(
           {
-            field: 'lot_number',
+            field: 'lotNumber',
             error: HTTP_MESSAGES.PRODUCTS_ERROR.ALREADY_EXISTS,
           },
           HTTP_STATUS.CLIENT_ERROR.CONFLICT,

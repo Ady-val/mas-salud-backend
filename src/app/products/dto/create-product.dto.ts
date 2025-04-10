@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString, IsNumber, IsDateString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { EProductForm, EProductUnit } from 'common/enum/products.enum';
 
 export class CreateProductDto {
@@ -12,6 +12,10 @@ export class CreateProductDto {
 
   @IsString()
   @IsNotEmpty()
+  presentation: string;
+
+  @IsString()
+  @IsNotEmpty()
   dosage: string;
 
   @IsEnum(EProductForm)
@@ -19,18 +23,4 @@ export class CreateProductDto {
 
   @IsEnum(EProductUnit)
   unit: EProductUnit;
-
-  @IsString()
-  @IsNotEmpty()
-  presentation: string;
-
-  @IsNumber()
-  quantity: number;
-
-  @IsDateString()
-  expirationDate: string;
-
-  @IsOptional()
-  @IsString()
-  lotNumber?: string;
 }

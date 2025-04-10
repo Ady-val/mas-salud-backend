@@ -25,7 +25,19 @@ export class InventoryDataDto {
   @Type(() => Institution)
   institution: Institution;
 
+  @ApiProperty({ example: '1234567890123', description: 'Número de lote' })
+  @Expose()
+  batchNumber: string;
+
+  @ApiProperty({ example: '1234567890123', description: 'Código de barras' })
+  @Expose()
+  barcode: string;
+
   @ApiProperty({ example: 150, description: 'Cantidad de inventario' })
   @Expose()
   quantity: number;
+
+  @ApiProperty({ example: '2023-10-01', description: 'Fecha de caducidad' })
+  @Expose()
+  expirationDate: string;
 }

@@ -1,13 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, DeleteDateColumn } from 'typeorm';
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumberString,
-  IsOptional,
-  IsString,
-  IsUUID,
-  MaxLength,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumberString, IsString, IsUUID, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { EProductForm, EProductUnit } from './../../common/enum/products.enum';
 import { Exclude } from 'class-transformer';
@@ -34,6 +26,12 @@ export class Product {
   brand: string;
 
   @Column()
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ example: 'caja con 20 tabletas', description: 'Presentación del producto' })
+  presentation: string;
+
+  @Column()
   @IsNumberString()
   @IsNotEmpty()
   @ApiProperty({ example: '500', description: 'Dosis del producto' })
@@ -54,32 +52,6 @@ export class Product {
   @IsNotEmpty()
   @ApiProperty({ enum: EProductUnit, example: EProductUnit.MG, description: 'Unidad de medida' })
   unit: EProductUnit;
-
-  @Column()
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ example: 'caja con 20 tabletas', description: 'Presentación del producto' })
-  presentation: string;
-
-  @Column()
-  @IsNotEmpty()
-  @ApiProperty({ example: 150, description: 'Cantidad disponible' })
-  quantity: number;
-
-  @Column({ type: 'date' })
-  @IsNotEmpty()
-  @ApiProperty({ example: '2026-01-15', description: 'Fecha de expiración' })
-  expirationDate: Date;
-
-  @Column({ nullable: true })
-  @IsOptional()
-  @IsString()
-  @ApiProperty({
-    example: 'PARA12345',
-    description: 'Número de lote del producto',
-    required: false,
-  })
-  lotNumber?: string;
 
   @Exclude()
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

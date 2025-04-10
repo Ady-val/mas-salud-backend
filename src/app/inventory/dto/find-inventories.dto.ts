@@ -1,19 +1,8 @@
 import { Expose, Type } from 'class-transformer';
 import { InventoryDataDto } from './inventory-data.dto';
+import { PaginatedResponseDTO } from 'common/dto/paginated-response.dto';
 
-export class ResponseInventoryDto {
-  @Expose()
-  count: number;
-
-  @Expose()
-  totalPages: number;
-
-  @Expose()
-  page: number;
-
-  @Expose()
-  limit: number;
-
+export class ResponseInventoryDto extends PaginatedResponseDTO {
   @Expose()
   @Type(() => InventoryDataDto)
   data: InventoryDataDto[];

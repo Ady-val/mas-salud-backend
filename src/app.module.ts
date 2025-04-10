@@ -10,6 +10,7 @@ import { CaslAbilityFactory } from 'app/auth/casl/casl-ability.factory';
 import { BeneficiariesModule } from 'app/beneficiaries/beneficiaries.module';
 import { ProductsModule } from 'app/products/products.module';
 import { AppController } from 'app.controller';
+import { InventoryModule } from 'app/inventory/inventory.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AppController } from 'app.controller';
     InstitutionsModule,
     BeneficiariesModule,
     ProductsModule,
+    InventoryModule,
   ],
   controllers: [AppController],
   providers: [

@@ -12,22 +12,20 @@ export class UpdateInventoryDto {
   id: string;
 
   @ApiProperty({
-    example: 'a1b2c3d4-e5f6-7890-abcd-1234567890ef',
-    description: 'ID del producto asociado',
+    example: '1234567890123',
+    description: 'Número de lote del producto',
     required: true,
   })
-  @IsUUID()
   @IsNotEmpty()
-  productId: string;
+  batchNumber: string;
 
   @ApiProperty({
-    example: 'abcd1234-5678-90ef-ghij-1234567890kl',
-    description: 'ID de la institución asociada',
+    example: '1234567890123',
+    description: 'Código de barras del producto',
     required: true,
   })
-  @IsUUID()
   @IsNotEmpty()
-  institutionId: string;
+  barcode: string;
 
   @ApiProperty({
     example: 200,
@@ -37,4 +35,12 @@ export class UpdateInventoryDto {
   @IsInt()
   @Min(0)
   quantity: number;
+
+  @ApiProperty({
+    example: '2023-10-01',
+    description: 'Fecha de caducidad actualizada',
+    required: true,
+  })
+  @IsNotEmpty()
+  expirationDate: string;
 }

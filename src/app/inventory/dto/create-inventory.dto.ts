@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID, IsNotEmpty, IsInt, Min } from 'class-validator';
+import { IsUUID, IsNotEmpty, IsInt, Min, IsDateString } from 'class-validator';
 
 export class CreateInventoryDto {
   @ApiProperty({
@@ -23,6 +23,22 @@ export class CreateInventoryDto {
   institutionId: string;
 
   @ApiProperty({
+    example: '1234567890123',
+    description: 'Número de lote del producto',
+    required: true,
+  })
+  @IsNotEmpty()
+  batchNumber: string;
+
+  @ApiProperty({
+    example: '1234567890123',
+    description: 'Código de barras del producto',
+    required: true,
+  })
+  @IsNotEmpty()
+  barcode: string;
+
+  @ApiProperty({
     example: 100,
     description: 'Cantidad de productos en inventario',
     required: true,
@@ -31,4 +47,7 @@ export class CreateInventoryDto {
   @IsInt()
   @Min(0)
   quantity: number;
+
+  @IsDateString()
+  expirationDate: string;
 }

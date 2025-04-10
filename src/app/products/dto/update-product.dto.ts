@@ -1,13 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsDateString,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  IsUUID,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { EProductForm, EProductUnit } from 'common/enum/products.enum';
 
 export class UpdateProductDto {
@@ -30,6 +22,10 @@ export class UpdateProductDto {
 
   @IsString()
   @IsNotEmpty()
+  presentation: string;
+
+  @IsString()
+  @IsNotEmpty()
   dosage: string;
 
   @IsEnum(EProductForm)
@@ -37,18 +33,4 @@ export class UpdateProductDto {
 
   @IsEnum(EProductUnit)
   unit: EProductUnit;
-
-  @IsString()
-  @IsNotEmpty()
-  presentation: string;
-
-  @IsNumber()
-  quantity: number;
-
-  @IsDateString()
-  expirationDate: string;
-
-  @IsOptional()
-  @IsString()
-  lotNumber?: string;
 }

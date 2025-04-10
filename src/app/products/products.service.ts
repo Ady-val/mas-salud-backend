@@ -38,7 +38,6 @@ export class ProductsService {
         brand: product.brand,
         dosage: product.dosage,
         unit: product.unit,
-        lotNumber: product.lotNumber,
       },
     });
     if (existingProduct) {
@@ -72,7 +71,6 @@ export class ProductsService {
       brand: string;
       form: string;
       unit: string;
-      lotNumber: string;
     }>,
   ): Promise<ResponseProductsDto> {
     const query = this.productRepository.createQueryBuilder('product');
@@ -88,11 +86,6 @@ export class ProductsService {
     }
     if (filters?.unit) {
       query.andWhere('product.unit = :unit', { unit: filters.unit });
-    }
-    if (filters?.lotNumber) {
-      query.andWhere('product.lotNumber LIKE :lotNumber', {
-        lotNumber: `${filters.lotNumber}%`,
-      });
     }
 
     const count = await query.getCount();
@@ -124,22 +117,6 @@ export class ProductsService {
         },
         HTTP_STATUS.CLIENT_ERROR.NOT_FOUND,
       );
-    }
-
-    if (product.lotNumber && product.lotNumber !== existingProduct.lotNumber) {
-      const lotExists = await this.productRepository.findOne({
-        where: { lotNumber: product.lotNumber },
-      });
-
-      if (lotExists) {
-        throw CustomHttpException(
-          {
-            field: 'lotNumber',
-            error: HTTP_MESSAGES.PRODUCTS_ERROR.ALREADY_EXISTS,
-          },
-          HTTP_STATUS.CLIENT_ERROR.CONFLICT,
-        );
-      }
     }
 
     const updated = { ...existingProduct, ...product };

@@ -6,6 +6,7 @@ import {
   Beneficiary,
   Product,
   InventoryItem,
+  InventoryMovement,
 } from './common/entities';
 
 export const AppDataSource = new DataSource({
@@ -15,7 +16,15 @@ export const AppDataSource = new DataSource({
   username: 'massalud',
   password: 'contra123',
   database: 'mas_salud',
-  entities: [User, Institution, SessionEntity, Beneficiary, Product, InventoryItem],
+  entities: [
+    User,
+    Institution,
+    SessionEntity,
+    Beneficiary,
+    Product,
+    InventoryItem,
+    InventoryMovement,
+  ],
   // migrations: ['migrations/*.ts'],
   migrations: ['../migrations/*.ts'],
   synchronize: false,

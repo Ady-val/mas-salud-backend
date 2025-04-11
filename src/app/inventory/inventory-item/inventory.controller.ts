@@ -1,9 +1,9 @@
 import { Controller, Get, Param, Query, Post, Body, Put, Delete } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
-import { CreateInventoryDto } from './dto/create-inventory.dto';
-import { UpdateInventoryDto } from './dto/update-inventory.dto';
-import { ResponseInventoryDto } from './dto/find-inventories.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CreateInventoryDto } from './dto/create-inventory.dto';
+import { ResponseInventoryDto } from './dto/find-inventories.dto';
+import { UpdateInventoryDto } from './dto/update-inventory.dto';
 
 @ApiTags('Inventarios')
 @Controller('inventories')

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { Institution, Product } from '../../../common/entities';
+import { Institution, Product } from '../../../../common/entities';
 
 export class InventoryDataDto {
   @ApiProperty({ example: 'uuid-del-inventario', description: 'ID del inventario' })

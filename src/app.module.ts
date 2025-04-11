@@ -10,7 +10,8 @@ import { CaslAbilityFactory } from 'app/auth/casl/casl-ability.factory';
 import { BeneficiariesModule } from 'app/beneficiaries/beneficiaries.module';
 import { ProductsModule } from 'app/products/products.module';
 import { AppController } from 'app.controller';
-import { InventoryModule } from 'app/inventory/inventory.module';
+import { InventoryModule } from 'app/inventory/inventory-item/inventory.module';
+import { InventoryMovementModule } from 'app/inventory/inventory-movements/inventory-movement.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { InventoryModule } from 'app/inventory/inventory.module';
     BeneficiariesModule,
     ProductsModule,
     InventoryModule,
+    InventoryMovementModule,
   ],
   controllers: [AppController],
   providers: [

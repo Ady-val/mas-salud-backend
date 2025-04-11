@@ -4,3 +4,4 @@ export { Product } from './products.entity';
 export { SessionEntity } from './sessions.entity';
 export { User } from './users.entity';
 export { InventoryItem } from './inventory.entity';
+export { InventoryMovement } from './inventory-movement.entity';

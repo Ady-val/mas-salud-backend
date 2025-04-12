@@ -175,7 +175,7 @@ export class InventoryService {
       });
     }
     if (filters?.name) {
-      baseQuery.andWhere('product.name ILIKE :name', { name: `%${filters.name}%` });
+      baseQuery.andWhere('product.name LIKE :name', { name: `%${filters.name}%` });
     }
 
     const count = (await baseQuery.getRawMany()).length;
@@ -188,6 +188,7 @@ export class InventoryService {
       .getRawMany();
 
     const result = data.map((item: GroupedRawInventory) => ({
+      id: item.productId + '-' + item.institutionId,
       name: `${item.productName} | ${item.productBrand} | ${item.productDosage}${item.productUnit} | ${item.productPresentation}`,
       quantity: parseInt(item.totalQuantity, 10),
       batches: parseInt(item.totalBatches, 10),

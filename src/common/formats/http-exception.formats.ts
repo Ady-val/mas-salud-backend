@@ -10,7 +10,13 @@ export const CustomHttpException = (
   statusCode: number,
 ) => {
   if (typeof err === 'string') {
-    return new HttpException(err, statusCode);
+    return new HttpException(
+      {
+        field: 'Error',
+        error: err,
+      },
+      400,
+    );
   }
 
   if (Array.isArray(err)) {

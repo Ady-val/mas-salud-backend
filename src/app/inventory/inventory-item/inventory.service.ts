@@ -11,6 +11,8 @@ import { GroupedInventoryResponseDto } from './dto/find-grouped-inventoruy.dto';
 import { CreateInventoryDto } from './dto/create-inventory.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';
 import { InventoryMovementType } from 'common/entities/inventory-movement.entity';
+import { IUserTokenInfo } from 'common/formats/user-token-info.interface';
+import { EInventoryMovementReason } from '../inventory-movements/enum/inventory-movement-reasons.enum';
 
 interface GroupedRawInventory {
   productId: string;
@@ -52,7 +54,7 @@ export class InventoryService {
     return plainToInstance(InventoryItem, inventoryItem);
   }
 
-  async create(dto: CreateInventoryDto): Promise<InventoryItem> {
+  async create(dto: CreateInventoryDto, user: IUserTokenInfo): Promise<InventoryItem> {
     const inventory = this.inventoryRepository.create(dto);
     const savedInventory = await this.inventoryRepository.save(inventory);
 
@@ -60,6 +62,8 @@ export class InventoryService {
       inventoryItemId: savedInventory.id,
       quantity: savedInventory.quantity,
       type: InventoryMovementType.IN,
+      reason: EInventoryMovementReason.NEW_STOCK_ENTRY,
+      userId: user.sub,
     });
 
     await this.movementRepository.save(movement);
@@ -201,7 +205,7 @@ export class InventoryService {
     });
   }
 
-  async update(id: string, dto: UpdateInventoryDto): Promise<InventoryItem> {
+  async update(id: string, dto: UpdateInventoryDto, user: IUserTokenInfo): Promise<InventoryItem> {
     const inventory = await this.findOneById(id);
     const originalQuantity = inventory.quantity;
     this.inventoryRepository.merge(inventory, dto);
@@ -213,6 +217,8 @@ export class InventoryService {
         quantity: Math.abs(dto.quantity - originalQuantity),
         type:
           dto.quantity > originalQuantity ? InventoryMovementType.IN : InventoryMovementType.OUT,
+        reason: EInventoryMovementReason.STOCK_ADJUSTMENT,
+        userId: user.sub,
       });
       await this.movementRepository.save(movement);
     }
@@ -220,13 +226,15 @@ export class InventoryService {
     return updatedInventory;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string, user: IUserTokenInfo): Promise<void> {
     const inventory = await this.findOneById(id);
 
     const movement = this.movementRepository.create({
       inventoryItemId: inventory.id,
       quantity: inventory.quantity,
       type: InventoryMovementType.OUT,
+      reason: EInventoryMovementReason.BATCH_DELETED_BY_USER,
+      userId: user.sub,
     });
     await this.movementRepository.save(movement);
 

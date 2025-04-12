@@ -4,9 +4,10 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-  CreateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { InventoryItem } from './inventory.entity';
+import { EInventoryMovementReason } from '../../app/inventory/inventory-movements/enum/inventory-movement-reasons.enum';
 
 export enum InventoryMovementType {
   IN = 'IN',
@@ -31,6 +32,22 @@ export class InventoryMovement {
   @Column({ type: 'int' })
   quantity: number;
 
-  @CreateDateColumn()
+  @Column({ type: 'enum', enum: EInventoryMovementReason })
+  reason: EInventoryMovementReason;
+
+  @Column({ type: 'uuid', nullable: true })
+  userId?: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'timestamp', nullable: true, select: false })
+  deletedAt?: Date;
 }

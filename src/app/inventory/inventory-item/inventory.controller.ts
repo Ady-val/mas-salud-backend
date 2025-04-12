@@ -1,12 +1,26 @@
-import { Controller, Get, Param, Query, Post, Body, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  Post,
+  Body,
+  Put,
+  Delete,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateInventoryDto } from './dto/create-inventory.dto';
 import { ResponseInventoryDto } from './dto/find-inventories.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';
+import { UserRequest } from 'common/interfaces/api-request.interface';
+import { SessionGuard } from 'app/auth/guard/session.guard';
 
 @ApiTags('Inventarios')
 @Controller('inventories')
+@UseGuards(SessionGuard)
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
 
@@ -14,8 +28,8 @@ export class InventoryController {
   @ApiOperation({ summary: 'Crear un nuevo inventario' })
   @ApiResponse({ status: 201, description: 'Inventario creado correctamente.' })
   @ApiResponse({ status: 400, description: 'Error de validación.' })
-  async create(@Body() createInventoryDto: CreateInventoryDto) {
-    return await this.inventoryService.create(createInventoryDto);
+  async create(@Body() createInventoryDto: CreateInventoryDto, @Request() req: UserRequest) {
+    return await this.inventoryService.create(createInventoryDto, req.user);
   }
 
   @Get()
@@ -61,15 +75,19 @@ export class InventoryController {
   @ApiResponse({ status: 200, description: 'Inventario actualizado correctamente.' })
   @ApiResponse({ status: 400, description: 'Error de validación.' })
   @ApiResponse({ status: 404, description: 'Inventario no encontrado.' })
-  async update(@Param('id') id: string, @Body() updateInventoryDto: UpdateInventoryDto) {
-    return this.inventoryService.update(id, updateInventoryDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateInventoryDto: UpdateInventoryDto,
+    @Request() req: UserRequest,
+  ) {
+    return this.inventoryService.update(id, updateInventoryDto, req.user);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Eliminar un inventario por ID' })
   @ApiResponse({ status: 200, description: 'Inventario eliminado correctamente.' })
   @ApiResponse({ status: 404, description: 'Inventario no encontrado.' })
-  async remove(@Param('id') id: string) {
-    return this.inventoryService.remove(id);
+  async remove(@Param('id') id: string, @Request() req: UserRequest) {
+    return this.inventoryService.remove(id, req.user);
   }
 }

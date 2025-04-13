@@ -37,6 +37,10 @@ export class InventoryDataDto {
   @Expose()
   quantity: number;
 
+  @ApiProperty({ example: 150, description: 'Cantidad actual' })
+  @Expose()
+  currentQuantity: number;
+
   @ApiProperty({ example: '2023-10-01', description: 'Fecha de caducidad' })
   @Expose()
   expirationDate: string;

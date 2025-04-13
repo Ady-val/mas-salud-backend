@@ -7,7 +7,7 @@ import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
 import { HTTP_STATUS } from 'common/constants/http-status.constants';
 import { InventoryItem, InventoryMovement } from 'common/entities';
 import { ResponseInventoryDto } from './dto/find-inventories.dto';
-import { GroupedInventoryResponseDto } from './dto/find-grouped-inventoruy.dto';
+import { GroupedInventoryResponseDto } from './dto/find-grouped-inventory.dto';
 import { CreateInventoryDto } from './dto/create-inventory.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';
 import { InventoryMovementType } from 'common/entities/inventory-movement.entity';
@@ -25,6 +25,23 @@ interface GroupedRawInventory {
   institutionId: string;
   totalQuantity: string;
   totalBatches: string;
+}
+
+interface RawInventory {
+  inventory_id: string;
+  inventory_productId: string;
+  product_name: string;
+  product_brand: string;
+  product_dosage: string;
+  product_unit: string;
+  product_presentation: string;
+  inventory_institutionId: string;
+  institution_name: string;
+  inventory_batchNumber: string;
+  inventory_barcode: string;
+  inventory_expirationDate: Date;
+  inventory_quantity: number;
+  currentQuantity: number;
 }
 
 @Injectable()
@@ -82,7 +99,18 @@ export class InventoryService {
     const query = this.inventoryRepository
       .createQueryBuilder('inventory')
       .leftJoinAndSelect('inventory.product', 'product')
-      .leftJoinAndSelect('inventory.institution', 'institution');
+      .leftJoinAndSelect('inventory.institution', 'institution')
+      .addSelect((subQuery) => {
+        return subQuery
+          .select(
+            `
+            inventory.quantity -
+            COALESCE(SUM(CASE WHEN m.type = 'OUT' THEN m.quantity ELSE 0 END), 0)
+          `,
+          )
+          .from('inventory_movements', 'm')
+          .where('m.inventoryItemId = inventory.id');
+      }, 'currentQuantity');
 
     if (filters?.productId) {
       query.andWhere('inventory.productId = :productId', { productId: filters.productId });
@@ -105,19 +133,22 @@ export class InventoryService {
       .orderBy('inventory.createdAt', 'DESC')
       .skip((page - 1) * limit)
       .take(limit)
-      .getMany();
+      .getRawMany();
 
-    const data = inventories.map((item) => ({
-      id: item.id,
-      productId: item.productId,
-      product: `${item.product.name} | ${item.product.brand} | ${item.product.dosage}${item.product.unit} | ${item.product.presentation}`,
-      institutionId: item.institutionId,
-      institution: item.institution.name,
-      batchNumber: item.batchNumber,
-      barcode: item.barcode,
-      expirationDate: item.expirationDate,
-      quantity: item.quantity,
-    }));
+    const data = inventories.map((item: RawInventory) => {
+      return {
+        id: item.inventory_id,
+        productId: item.inventory_productId,
+        product: `${item.product_name} | ${item.product_brand} | ${item.product_dosage}${item.product_unit} | ${item.product_presentation}`,
+        institutionId: item.inventory_institutionId,
+        institution: item.institution_name,
+        batchNumber: item.inventory_batchNumber,
+        barcode: item.inventory_barcode,
+        expirationDate: item.inventory_expirationDate.toISOString().substring(0, 10),
+        quantity: item.inventory_quantity,
+        currentQuantity: item.currentQuantity,
+      };
+    });
 
     return plainToInstance(ResponseInventoryDto, {
       count,

@@ -1,18 +1,26 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { CaslAbilityFactory } from 'app/auth/casl/casl-ability.factory';
 import { SessionGuard } from 'app/auth/guard/session.guard';
-import { Request } from 'express';
+import { UserRequest } from 'common/interfaces/api-request.interface';
 
 @UseGuards(SessionGuard)
 @Controller()
 export class AppController {
-  constructor() {}
+  constructor(private readonly caslAbilityFactory: CaslAbilityFactory) {}
 
   @Get('me')
-  getHello(@Req() request: Request): string {
-    const user = request['user'] as { username?: string } | undefined;
-    if (user && typeof user.username === 'string') {
-      return user.username;
+  getHello(@Req() req: UserRequest): any {
+    const user = req.user;
+    if (!user) {
+      throw new Error('User not found');
     }
-    throw new Error('User or username not found');
+
+    const rules = this.caslAbilityFactory.getRulesForUser(user);
+
+    return {
+      username: user.username,
+      institutionId: user.institutionId,
+      permissions: rules,
+    };
   }
 }

@@ -5,5 +5,7 @@ export enum Modules {
   Beneficiaries = 'Beneficiaries',
   Products = 'Products',
   MedicalSpecialists = 'MedicalSpecialists',
+  InventoryItem = 'InventoryItem',
+  InventoryMovement = 'InventoryMovement',
   Dashboard = 'Dashboard',
 }

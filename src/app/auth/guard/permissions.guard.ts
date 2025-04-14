@@ -2,8 +2,7 @@ import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@
 import { Reflector } from '@nestjs/core';
 import { CaslAbilityFactory } from '../casl/casl-ability.factory';
 import { CHECK_ABILITY, RequiredRule } from '../decorators/abilities.decorator';
-import { Request } from 'express';
-import { User } from 'common/entities/users.entity';
+import { UserRequest } from 'common/interfaces/api-request.interface';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
@@ -18,8 +17,8 @@ export class PermissionGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest<Request>();
-    const user = request['user'] as User;
+    const request = context.switchToHttp().getRequest<UserRequest>();
+    const user = request.user;
 
     const ability = this.caslAbilityFactory.createForUser(user);
 

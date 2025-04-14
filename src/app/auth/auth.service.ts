@@ -5,6 +5,7 @@ import { PasswordService } from './password/password.service';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { SessionService } from './sessions/session.service';
 import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
+import { CaslAbilityFactory } from './casl/casl-ability.factory';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly passwordService: PasswordService,
     private readonly sessionService: SessionService,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   async login(loginDto: LoginDto): Promise<LoginResponseDto> {
@@ -29,11 +31,20 @@ export class AuthService {
 
     const { token: accessToken } = await this.sessionService.createSession(user);
 
+    const rules = this.caslAbilityFactory.getRulesForUser({
+      username: user.username,
+      sub: user.id,
+      institutionId: user.institutionId ?? '',
+      role: user.role ?? [],
+      isAdmin: user.isAdmin,
+    });
+
     return {
       accessToken,
       username: user.username,
       institutionId: user.institutionId ?? '',
       name: user.name,
+      rules,
     };
   }
 

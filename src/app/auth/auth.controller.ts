@@ -27,6 +27,7 @@ export class AuthController {
       username: loginResponse.username,
       institutionId: loginResponse.institutionId,
       name: loginResponse.name,
+      rules: loginResponse.rules,
     };
   }
 }

@@ -17,6 +17,9 @@ import { ResponseInventoryDto } from './dto/find-inventories.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';
 import { UserRequest } from 'common/interfaces/api-request.interface';
 import { SessionGuard } from 'app/auth/guard/session.guard';
+import { Roles } from 'app/auth/decorators/abilities.decorator';
+import { Action } from 'common/enum/action.enum';
+import { Modules } from 'common/enum/modules.enum';
 
 @ApiTags('Inventarios')
 @Controller('inventories')
@@ -28,6 +31,7 @@ export class InventoryController {
   @ApiOperation({ summary: 'Crear un nuevo inventario' })
   @ApiResponse({ status: 201, description: 'Inventario creado correctamente.' })
   @ApiResponse({ status: 400, description: 'Error de validación.' })
+  @Roles({ action: Action.Create, subject: Modules.InventoryItem })
   async create(@Body() createInventoryDto: CreateInventoryDto, @Request() req: UserRequest) {
     return await this.inventoryService.create(createInventoryDto, req.user);
   }
@@ -35,6 +39,7 @@ export class InventoryController {
   @Get()
   @ApiOperation({ summary: 'Obtener todos los inventarios' })
   @ApiResponse({ status: 200, description: 'Lista de inventarios', type: ResponseInventoryDto })
+  @Roles({ action: Action.Read, subject: Modules.InventoryItem })
   async findAll(
     @Query('page') page: number,
     @Query('limit') limit: number,
@@ -48,6 +53,7 @@ export class InventoryController {
   @Get('grouped')
   @ApiOperation({ summary: 'Obtener inventario agrupado por producto' })
   @ApiResponse({ status: 200, description: 'Inventario agrupado por producto', type: Object })
+  @Roles({ action: Action.Read, subject: Modules.InventoryItem })
   async getGroupedInventory(
     @Query('page') page: number,
     @Query('limit') limit: number,
@@ -66,6 +72,7 @@ export class InventoryController {
   @ApiOperation({ summary: 'Obtener un inventario por ID' })
   @ApiResponse({ status: 200, description: 'Inventario encontrado', type: ResponseInventoryDto })
   @ApiResponse({ status: 404, description: 'Inventario no encontrado' })
+  @Roles({ action: Action.Read, subject: Modules.InventoryItem })
   async findOne(@Param('id') id: string) {
     return this.inventoryService.findOne(id);
   }
@@ -75,6 +82,7 @@ export class InventoryController {
   @ApiResponse({ status: 200, description: 'Inventario actualizado correctamente.' })
   @ApiResponse({ status: 400, description: 'Error de validación.' })
   @ApiResponse({ status: 404, description: 'Inventario no encontrado.' })
+  @Roles({ action: Action.Update, subject: Modules.InventoryItem })
   async update(
     @Param('id') id: string,
     @Body() updateInventoryDto: UpdateInventoryDto,
@@ -87,6 +95,7 @@ export class InventoryController {
   @ApiOperation({ summary: 'Eliminar un inventario por ID' })
   @ApiResponse({ status: 200, description: 'Inventario eliminado correctamente.' })
   @ApiResponse({ status: 404, description: 'Inventario no encontrado.' })
+  @Roles({ action: Action.Delete, subject: Modules.InventoryItem })
   async remove(@Param('id') id: string, @Request() req: UserRequest) {
     return this.inventoryService.remove(id, req.user);
   }

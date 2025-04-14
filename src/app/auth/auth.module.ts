@@ -6,11 +6,12 @@ import { TokenModule } from './token/token.module';
 import { SessionModule } from './sessions/session.module';
 import { SessionGuard } from './guard/session.guard';
 import { UsersModule } from 'app/users/users.module';
+import { CaslAbilityFactory } from './casl/casl-ability.factory';
 
 @Module({
   imports: [PasswordModule, TokenModule, SessionModule, UsersModule],
   controllers: [AuthController],
-  providers: [AuthService, SessionGuard, SessionModule, TokenModule],
-  exports: [AuthService, SessionGuard, SessionModule, TokenModule],
+  providers: [AuthService, SessionGuard, SessionModule, TokenModule, CaslAbilityFactory],
+  exports: [AuthService, SessionGuard, SessionModule, TokenModule, CaslAbilityFactory],
 })
 export class AuthModule {}

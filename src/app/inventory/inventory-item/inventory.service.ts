@@ -27,22 +27,7 @@ interface GroupedRawInventory {
   totalBatches: string;
 }
 
-interface RawInventory {
-  inventory_id: string;
-  inventory_productId: string;
-  product_name: string;
-  product_brand: string;
-  product_dosage: string;
-  product_unit: string;
-  product_presentation: string;
-  inventory_institutionId: string;
-  institution_name: string;
-  inventory_batchNumber: string;
-  inventory_barcode: string;
-  inventory_expirationDate: Date;
-  inventory_quantity: number;
-  currentQuantity: number;
-}
+type RawInventoryRow = Record<string, unknown>;
 
 @Injectable()
 export class InventoryService {
@@ -129,24 +114,27 @@ export class InventoryService {
     const count = await query.getCount();
     const totalPages = Math.ceil(count / limit);
 
-    const inventories = await query
+    const { entities, raw } = await query
       .orderBy('inventory.createdAt', 'DESC')
       .skip((page - 1) * limit)
       .take(limit)
-      .getRawMany();
+      .getRawAndEntities();
 
-    const data = inventories.map((item: RawInventory) => {
+    const data = entities.map((item, index) => {
+      const rawRow = raw[index] as RawInventoryRow;
+      const currentQuantityKey = Object.keys(rawRow).find((key) => key.endsWith('currentQuantity'));
+
       return {
-        id: item.inventory_id,
-        productId: item.inventory_productId,
-        product: `${item.product_name} | ${item.product_brand} | ${item.product_dosage}${item.product_unit} | ${item.product_presentation}`,
-        institutionId: item.inventory_institutionId,
-        institution: item.institution_name,
-        batchNumber: item.inventory_batchNumber,
-        barcode: item.inventory_barcode,
-        expirationDate: item.inventory_expirationDate.toISOString().substring(0, 10),
-        quantity: item.inventory_quantity,
-        currentQuantity: item.currentQuantity,
+        id: item.id,
+        productId: item.productId,
+        product: `${item.product.name} | ${item.product.brand} | ${item.product.dosage}${item.product.unit} | ${item.product.presentation}`,
+        institutionId: item.institutionId,
+        institution: item.institution.name,
+        batchNumber: item.batchNumber,
+        barcode: item.barcode,
+        expirationDate: item.expirationDate,
+        quantity: item.quantity,
+        currentQuantity: currentQuantityKey ? Number(rawRow[currentQuantityKey]) : 0,
       };
     });
 

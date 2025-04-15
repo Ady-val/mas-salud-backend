@@ -12,6 +12,7 @@ import { ProductsModule } from 'app/products/products.module';
 import { AppController } from 'app.controller';
 import { InventoryModule } from 'app/inventory/inventory-item/inventory.module';
 import { InventoryMovementModule } from 'app/inventory/inventory-movements/inventory-movement.module';
+import { MedicalSpecialistsModule } from 'app/medical-specialists/medical-specialists.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { InventoryMovementModule } from 'app/inventory/inventory-movements/inven
     ProductsModule,
     InventoryModule,
     InventoryMovementModule,
+    MedicalSpecialistsModule,
   ],
   controllers: [AppController],
   providers: [

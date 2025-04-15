@@ -50,6 +50,10 @@ export class CaslAbilityFactory {
       can(Action.Create, Modules.InventoryMovement);
       can(Action.Update, Modules.InventoryMovement);
       can(Action.Delete, Modules.InventoryMovement);
+      can(Action.Read, Modules.MedicalSpecialists);
+      can(Action.Create, Modules.MedicalSpecialists);
+      can(Action.Update, Modules.MedicalSpecialists);
+      can(Action.Delete, Modules.MedicalSpecialists);
     }
 
     return build({

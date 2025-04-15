@@ -7,6 +7,7 @@ import {
   Product,
   InventoryItem,
   InventoryMovement,
+  MedicalSpecialist,
 } from './common/entities';
 
 export const AppDataSource = new DataSource({
@@ -24,6 +25,7 @@ export const AppDataSource = new DataSource({
     Product,
     InventoryItem,
     InventoryMovement,
+    MedicalSpecialist,
   ],
   // migrations: ['migrations/*.ts'],
   migrations: ['../migrations/*.ts'],

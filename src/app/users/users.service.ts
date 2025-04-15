@@ -47,10 +47,12 @@ export class UsersService {
       .leftJoinAndSelect('user.institution', 'institution')
       .where('user.username = :username', { username })
       .select([
+        'user.id',
         'user.username',
         'user.name',
         'user.password',
         'user.isAdmin',
+        'user.role',
         'user.createdAt',
         'user.updatedAt',
         'institution.name',

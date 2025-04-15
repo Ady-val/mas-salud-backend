@@ -1,7 +1,7 @@
 export interface IUserTokenInfo {
   username: string;
   sub: string;
-  institutionId: string;
+  institution: string;
   role: string[];
   isAdmin: boolean;
 }

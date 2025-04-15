@@ -42,7 +42,20 @@ export class UsersService {
   }
 
   async getUserByUsername(username: string): Promise<User | null> {
-    return await this.userRepository.findOne({ where: { username } });
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.institution', 'institution')
+      .where('user.username = :username', { username })
+      .select([
+        'user.username',
+        'user.name',
+        'user.password',
+        'user.isAdmin',
+        'user.createdAt',
+        'user.updatedAt',
+        'institution.name',
+      ])
+      .getOne();
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserResponse> {

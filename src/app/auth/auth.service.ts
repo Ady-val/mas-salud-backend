@@ -34,7 +34,7 @@ export class AuthService {
     const rules = this.caslAbilityFactory.getRulesForUser({
       username: user.username,
       sub: user.id,
-      institutionId: user.institutionId ?? '',
+      institution: user.institution?.name ?? '',
       role: user.role ?? [],
       isAdmin: user.isAdmin,
     });
@@ -42,7 +42,7 @@ export class AuthService {
     return {
       accessToken,
       username: user.username,
-      institutionId: user.institutionId ?? '',
+      institution: user.institution?.name ?? '',
       name: user.name,
       rules,
     };

@@ -8,7 +8,7 @@ export class TokenPayloadDto {
   sub: string;
 
   @Expose()
-  institutionId: string;
+  institution: string;
 
   @Expose()
   iat: number;

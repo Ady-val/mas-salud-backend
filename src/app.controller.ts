@@ -19,7 +19,7 @@ export class AppController {
 
     return {
       username: user.username,
-      institutionId: user.institutionId,
+      institution: user.institution,
       permissions: rules,
     };
   }

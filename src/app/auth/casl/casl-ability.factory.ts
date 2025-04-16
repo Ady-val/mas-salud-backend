@@ -30,30 +30,11 @@ export class CaslAbilityFactory {
 
     if (user.role?.includes(Role.DATA_ENTRY_OPERATOR)) {
       can(Action.Read, Modules.Institutions);
-      can(Action.Read, Modules.Beneficiaries);
-      can(Action.Create, Modules.Beneficiaries);
-      can(Action.Update, Modules.Beneficiaries);
-      can(Action.Delete, Modules.Beneficiaries);
-      can(Action.Read, Modules.MedicalSpecialists);
-      can(Action.Create, Modules.MedicalSpecialists);
-      can(Action.Update, Modules.MedicalSpecialists);
-      can(Action.Delete, Modules.MedicalSpecialists);
-      can(Action.Read, Modules.Products);
-      can(Action.Create, Modules.Products);
-      can(Action.Update, Modules.Products);
-      can(Action.Delete, Modules.Products);
-      can(Action.Read, Modules.InventoryItem);
-      can(Action.Create, Modules.InventoryItem);
-      can(Action.Update, Modules.InventoryItem);
-      can(Action.Delete, Modules.InventoryItem);
-      can(Action.Read, Modules.InventoryMovement);
-      can(Action.Create, Modules.InventoryMovement);
-      can(Action.Update, Modules.InventoryMovement);
-      can(Action.Delete, Modules.InventoryMovement);
-      can(Action.Read, Modules.MedicalSpecialists);
-      can(Action.Create, Modules.MedicalSpecialists);
-      can(Action.Update, Modules.MedicalSpecialists);
-      can(Action.Delete, Modules.MedicalSpecialists);
+      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.Beneficiaries);
+      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.MedicalSpecialists);
+      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.Products);
+      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.InventoryMovement);
+      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.InventoryItem);
     }
 
     return build({

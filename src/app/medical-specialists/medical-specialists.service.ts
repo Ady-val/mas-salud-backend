@@ -40,7 +40,7 @@ export class MedicalSpecialistsService {
     limit = 10,
     filters?: Partial<{
       fullName: string;
-      specialty: string;
+      speciality: string;
       institutionId: string;
     }>,
   ): Promise<ResponseedicalSpecialistsDto> {
@@ -49,13 +49,17 @@ export class MedicalSpecialistsService {
       take: limit,
       skip: (page - 1) * limit,
       relations: ['institution'],
+      order: {
+        createdAt: 'DESC',
+      },
     });
 
     const data = specialists.map((specialist) => {
       const { institution, ...rest } = specialist;
       return plainToInstance(MedicalSpecialist, {
-        institution: institution.name,
         ...rest,
+        institution: institution.name,
+        institutionId: institution.id,
       });
     });
 

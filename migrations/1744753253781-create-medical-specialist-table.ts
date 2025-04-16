@@ -19,7 +19,7 @@ export class CreateMedicalSpecialistTable1744753253781 implements MigrationInter
             isNullable: false,
           },
           {
-            name: 'specialty',
+            name: 'speciality',
             type: 'varchar',
             isNullable: false,
           },

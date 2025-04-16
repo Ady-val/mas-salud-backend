@@ -42,12 +42,12 @@ export class MedicalSpecialistsController {
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
     @Query('fullName') fullName?: string,
-    @Query('specialty') specialty?: string,
+    @Query('speciality') speciality?: string,
     @Query('institutionId') institutionId?: string,
   ) {
     return this.medicalSpecialistsService.findAll(page, limit, {
       fullName,
-      specialty,
+      speciality,
       institutionId,
     });
   }

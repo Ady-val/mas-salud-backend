@@ -17,7 +17,7 @@ export class MedicalSpecialist {
   phone: string;
 
   @Column()
-  specialty: string;
+  speciality: string;
 
   @Column({ nullable: true })
   licenseNumber: string;
@@ -25,7 +25,6 @@ export class MedicalSpecialist {
   @ManyToOne(() => Institution, { nullable: false })
   institution: Institution;
 
-  @Exclude()
   @Column()
   institutionId: string;
 

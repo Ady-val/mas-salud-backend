@@ -16,20 +16,20 @@ export class CreateMedicalSpecialistDto {
   @MaxLength(100)
   fullName: string;
 
-  @IsEmail()
   @IsOptional()
+  @IsEmail()
   email?: string;
 
-  @IsNumberString()
   @IsOptional()
+  @IsNumberString()
   phone?: string;
 
   @IsEnum(SpecialistType)
-  specialty: SpecialistType;
+  speciality: SpecialistType;
 
   @IsOptional()
   @IsString()
-  professionalLicense?: string;
+  licenseNumber?: string;
 
   @IsUUID()
   institutionId: string;

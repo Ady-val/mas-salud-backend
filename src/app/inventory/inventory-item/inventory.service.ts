@@ -152,18 +152,23 @@ export class InventoryService {
     limit: number = 10,
     filters?: Partial<{ productId: string; institutionId: string; name: string }>,
   ): Promise<GroupedInventoryResponseDto> {
-    const subQuery = this.movementRepository
-      .createQueryBuilder('mov')
-      .select('mov.inventoryItemId', 'itemId')
-      .addSelect(
-        `SUM(CASE WHEN mov.type = 'IN' THEN mov.quantity ELSE -mov.quantity END)`,
-        'netQuantity',
-      )
-
-      .groupBy('mov.inventoryItemId');
     const baseQuery = this.inventoryRepository
       .createQueryBuilder('inventory')
-      .leftJoin('(' + subQuery.getQuery() + ')', 'movements', 'movements.itemId = inventory.id')
+      .leftJoin(
+        (qb) => {
+          return qb
+            .select('mov.inventoryItemId', 'inventoryitemid')
+            .addSelect(
+              `SUM(CASE WHEN mov.type = 'IN' THEN mov.quantity ELSE -mov.quantity END)`,
+              'netquantity',
+            )
+            .from(InventoryMovement, 'mov')
+            .where('mov.deletedAt IS NULL')
+            .groupBy('mov.inventoryItemId');
+        },
+        'movements',
+        'movements.inventoryitemid = inventory.id',
+      )
       .innerJoin('inventory.product', 'product')
       .leftJoin('inventory.institution', 'institution')
       .select('inventory.productId', 'productId')
@@ -175,7 +180,7 @@ export class InventoryService {
       .addSelect('institution.name', 'institutionName')
       .addSelect('institution.id', 'institutionId')
       .addSelect('COUNT(DISTINCT inventory.batchNumber)', 'totalBatches')
-      .addSelect('SUM(COALESCE(movements.netQuantity, 0))', 'totalQuantity')
+      .addSelect('SUM(COALESCE(movements.netquantity, 0))', 'totalQuantity')
       .groupBy('inventory.productId')
       .addGroupBy('product.name')
       .addGroupBy('product.brand')

@@ -13,11 +13,11 @@ import { ApiTags, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { InstitutionsService } from './institutions.service';
 import { CreateInstitutionDto } from './dto/create-institution.dto';
 import { UpdateInstitutionDto } from './dto/update-institution.dto';
-import { SessionGuard } from 'app/auth/guard/session.guard';
-import { PermissionGuard } from 'app/auth/guard/permissions.guard';
-import { Roles } from 'app/auth/decorators/abilities.decorator';
-import { Action } from 'common/enum/action.enum';
-import { Modules } from 'common/enum/modules.enum';
+import { SessionGuard } from '@app/auth/guard/session.guard';
+import { PermissionGuard } from '@app/auth/guard/permissions.guard';
+import { Roles } from '@app/auth/decorators/abilities.decorator';
+import { Action } from '@common/enum/action.enum';
+import { Modules } from '@common/enum/modules.enum';
 
 @ApiTags('Institutions')
 @UseGuards(SessionGuard, PermissionGuard)

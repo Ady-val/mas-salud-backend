@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { EProductForm, EProductUnit } from 'common/enum/products.enum';
+import { EProductForm, EProductUnit } from '@common/enum/products.enum';
 
 export class CreateProductDto {
   @IsString()

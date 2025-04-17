@@ -1,5 +1,5 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, Logger } from '@nestjs/common';
-import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
+import { HTTP_MESSAGES } from '@common/constants/http-messages.constants';
 import { Request, Response } from 'express';
 
 @Catch()
@@ -15,7 +15,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const res = exception.getResponse();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       message = typeof res === 'object' && 'message' in res ? res.message : res;
     } else if (exception instanceof Error) {
       message = exception.message;

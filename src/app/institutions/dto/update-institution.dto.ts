@@ -24,14 +24,4 @@ export class UpdateInstitutionDto extends PartialType(CreateInstitutionDto) {
   @IsString()
   @IsOptional()
   description?: string;
-
-  // @ApiProperty({
-  //   example: '123e4567-e89b-12d3-a456-426614174000',
-  //   description: 'ID del administrador asignado (opcional)',
-  //   required: false,
-  //   format: 'uuid'
-  // })
-  // @IsUUID()
-  // @IsOptional()
-  // adminId?: string; // Ejemplo de campo adicional para relaciones
 }

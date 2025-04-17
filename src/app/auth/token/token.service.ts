@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from 'common/entities/users.entity';
+import { User } from '@common/entities/users.entity';
 import { JwtService } from '@nestjs/jwt';
-import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
+import { HTTP_MESSAGES } from '@common/constants/http-messages.constants';
 import { TokenPayloadDto } from './dto/token-payload.dto';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class TokenService {
   verifyToken(token: string): TokenPayloadDto {
     try {
       const decoded = this.jwt.verify<TokenPayloadDto>(token, {
-        secret: 'secretKey',
+        secret: process.env.JWT_SECRET,
       });
       return decoded;
     } catch {

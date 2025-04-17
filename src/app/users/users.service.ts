@@ -4,7 +4,7 @@ import { User } from '../../common/entities/users.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PasswordService } from 'app/auth/password/password.service';
+import { PasswordService } from '@app/auth/password/password.service';
 import { plainToInstance } from 'class-transformer';
 import { UserResponse } from './dto/user-response.dto';
 
@@ -69,8 +69,12 @@ export class UsersService {
     const hashedPassword = await this.passwordService.hashPassword(createUserDto.password);
 
     const user = this.userRepository.create({
-      ...createUserDto,
+      username: createUserDto.username,
       password: hashedPassword,
+      name: createUserDto.name,
+      isAdmin: false,
+      institutionId: createUserDto.institutionId,
+      role: createUserDto.role,
     });
 
     const savedUser = await this.userRepository.save(user);

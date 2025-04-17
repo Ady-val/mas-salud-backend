@@ -13,11 +13,11 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { SessionGuard } from 'app/auth/guard/session.guard';
-import { PermissionGuard } from 'app/auth/guard/permissions.guard';
-import { Roles } from 'app/auth/decorators/abilities.decorator';
-import { Action } from 'common/enum/action.enum';
-import { Modules } from 'common/enum/modules.enum';
+import { SessionGuard } from '@app/auth/guard/session.guard';
+import { PermissionGuard } from '@app/auth/guard/permissions.guard';
+import { Roles } from '@app/auth/decorators/abilities.decorator';
+import { Action } from '@common/enum/action.enum';
+import { Modules } from '@common/enum/modules.enum';
 
 @ApiTags('Users')
 @UseGuards(SessionGuard, PermissionGuard)

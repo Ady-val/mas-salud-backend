@@ -6,11 +6,11 @@ import {
   PureAbility,
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { User } from 'common/entities/users.entity';
-import { Action } from 'common/enum/action.enum';
-import { Modules } from 'common/enum/modules.enum';
-import { Role } from 'common/enum/role.enum';
-import { IUserTokenInfo } from 'common/formats/user-token-info.interface';
+import { User } from '@common/entities/users.entity';
+import { Action } from '@common/enum/action.enum';
+import { Modules } from '@common/enum/modules.enum';
+import { Role } from '@common/enum/role.enum';
+import { IUserTokenInfo } from '@common/formats/user-token-info.interface';
 
 export type Subjects = InferSubjects<typeof User> | Modules | 'all';
 export type AppAbility = PureAbility<[Action, Subjects]>;

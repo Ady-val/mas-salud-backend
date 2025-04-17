@@ -6,9 +6,9 @@ import { CreateBeneficiaryDto } from './dto/create-beneficiary.dto';
 import { v5 as uuidv5 } from 'uuid';
 import { plainToInstance } from 'class-transformer';
 import { ResponseBeneficiariesDto } from './dto/benificiaries.dto';
-import { CustomHttpException } from 'common/formats/http-exception.formats';
-import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
-import { HTTP_STATUS } from 'common/constants/http-status.constants';
+import { CustomHttpException } from '@common/formats/http-exception.formats';
+import { HTTP_MESSAGES } from '@common/constants/http-messages.constants';
+import { HTTP_STATUS } from '@common/constants/http-status.constants';
 import { UpdateBeneficiaryDto } from './dto/update-beneficiary.dto';
 
 @Injectable()

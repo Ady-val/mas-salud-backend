@@ -2,16 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { plainToInstance } from 'class-transformer';
-import { CustomHttpException } from 'common/formats/http-exception.formats';
-import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
-import { HTTP_STATUS } from 'common/constants/http-status.constants';
-import { InventoryItem, InventoryMovement } from 'common/entities';
+import { CustomHttpException } from '@common/formats/http-exception.formats';
+import { HTTP_MESSAGES } from '@common/constants/http-messages.constants';
+import { HTTP_STATUS } from '@common/constants/http-status.constants';
+import { InventoryItem, InventoryMovement } from '@common/entities';
 import { ResponseInventoryDto } from './dto/find-inventories.dto';
 import { GroupedInventoryResponseDto } from './dto/find-grouped-inventory.dto';
 import { CreateInventoryDto } from './dto/create-inventory.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';
-import { InventoryMovementType } from 'common/entities/inventory-movement.entity';
-import { IUserTokenInfo } from 'common/formats/user-token-info.interface';
+import { InventoryMovementType } from '@common/entities/inventory-movement.entity';
+import { IUserTokenInfo } from '@common/formats/user-token-info.interface';
 import { EInventoryMovementReason } from '../inventory-movements/enum/inventory-movement-reasons.enum';
 
 interface GroupedRawInventory {
@@ -175,7 +175,7 @@ export class InventoryService {
       .addSelect('institution.name', 'institutionName')
       .addSelect('institution.id', 'institutionId')
       .addSelect('COUNT(DISTINCT inventory.batchNumber)', 'totalBatches')
-      .addSelect('SUM(COALESCE(movements.netQuantity, 0))', 'totalQuantity') // Usamos la cantidad neta
+      .addSelect('SUM(COALESCE(movements.netQuantity, 0))', 'totalQuantity')
       .groupBy('inventory.productId')
       .addGroupBy('product.name')
       .addGroupBy('product.brand')

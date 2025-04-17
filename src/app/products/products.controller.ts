@@ -12,13 +12,13 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
-import { Action } from 'common/enum/action.enum';
-import { Modules } from 'common/enum/modules.enum';
+import { Action } from '@common/enum/action.enum';
+import { Modules } from '@common/enum/modules.enum';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { SessionGuard } from 'app/auth/guard/session.guard';
-import { PermissionGuard } from 'app/auth/guard/permissions.guard';
-import { Roles } from 'app/auth/decorators/abilities.decorator';
+import { SessionGuard } from '@app/auth/guard/session.guard';
+import { PermissionGuard } from '@app/auth/guard/permissions.guard';
+import { Roles } from '@app/auth/decorators/abilities.decorator';
 
 @ApiTags('Products')
 @UseGuards(SessionGuard, PermissionGuard)

@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { InventoryItem, InventoryMovement } from 'common/entities';
+import { InventoryItem, InventoryMovement } from '@common/entities';
 import { Repository } from 'typeorm';
-import { InventoryMovementType } from 'common/entities/inventory-movement.entity';
-import { CustomHttpException } from 'common/formats/http-exception.formats';
-import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
-import { HTTP_STATUS } from 'common/constants/http-status.constants';
+import { InventoryMovementType } from '@common/entities/inventory-movement.entity';
+import { CustomHttpException } from '@common/formats/http-exception.formats';
+import { HTTP_MESSAGES } from '@common/constants/http-messages.constants';
+import { HTTP_STATUS } from '@common/constants/http-status.constants';
 import { EntryDto, ExitDto } from './dto/movements.dto';
 import { EInventoryMovementReason } from './enum/inventory-movement-reasons.enum';
-import { IUserTokenInfo } from 'common/formats/user-token-info.interface';
+import { IUserTokenInfo } from '@common/formats/user-token-info.interface';
 
 @Injectable()
 export class InventoryMovementService {

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SessionEntity } from '../../../common/entities/sessions.entity';
 import { TokenService } from '../token/token.service';
-import { User } from 'common/entities/users.entity';
+import { User } from '@common/entities/users.entity';
 
 @Injectable()
 export class SessionService {

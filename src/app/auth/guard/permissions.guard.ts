@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@
 import { Reflector } from '@nestjs/core';
 import { CaslAbilityFactory } from '../casl/casl-ability.factory';
 import { CHECK_ABILITY, RequiredRule } from '../decorators/abilities.decorator';
-import { UserRequest } from 'common/interfaces/api-request.interface';
+import { UserRequest } from '@common/interfaces/api-request.interface';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {

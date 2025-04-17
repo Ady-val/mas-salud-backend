@@ -1,7 +1,7 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { CaslAbilityFactory } from 'app/auth/casl/casl-ability.factory';
-import { SessionGuard } from 'app/auth/guard/session.guard';
-import { UserRequest } from 'common/interfaces/api-request.interface';
+import { CaslAbilityFactory } from '@app/auth/casl/casl-ability.factory';
+import { SessionGuard } from '@app/auth/guard/session.guard';
+import { UserRequest } from '@common/interfaces/api-request.interface';
 
 @UseGuards(SessionGuard)
 @Controller()

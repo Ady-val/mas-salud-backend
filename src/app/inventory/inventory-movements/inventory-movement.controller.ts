@@ -1,12 +1,12 @@
 import { Controller, Post, Body, Param, Request, UseGuards } from '@nestjs/common';
 import { InventoryMovementService } from './inventory-movement.service';
 import { EntryDto, ExitDto } from './dto/movements.dto';
-import { UserRequest } from 'common/interfaces/api-request.interface';
-import { SessionGuard } from 'app/auth/guard/session.guard';
-import { PermissionGuard } from 'app/auth/guard/permissions.guard';
-import { Roles } from 'app/auth/decorators/abilities.decorator';
-import { Action } from 'common/enum/action.enum';
-import { Modules } from 'common/enum/modules.enum';
+import { UserRequest } from '@common/interfaces/api-request.interface';
+import { SessionGuard } from '@app/auth/guard/session.guard';
+import { PermissionGuard } from '@app/auth/guard/permissions.guard';
+import { Roles } from '@app/auth/decorators/abilities.decorator';
+import { Action } from '@common/enum/action.enum';
+import { Modules } from '@common/enum/modules.enum';
 
 @Controller('inventory-movements')
 @UseGuards(SessionGuard, PermissionGuard)

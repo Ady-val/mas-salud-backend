@@ -5,7 +5,7 @@ import { PasswordModule } from './password/password.module';
 import { TokenModule } from './token/token.module';
 import { SessionModule } from './sessions/session.module';
 import { SessionGuard } from './guard/session.guard';
-import { UsersModule } from 'app/users/users.module';
+import { UsersModule } from '@app/users/users.module';
 import { CaslAbilityFactory } from './casl/casl-ability.factory';
 
 @Module({

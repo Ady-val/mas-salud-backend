@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import { Action } from 'common/enum/action.enum';
+import { Action } from '@common/enum/action.enum';
 import { Subjects } from '../casl/casl-ability.factory';
 
 export const CHECK_ABILITY = 'check_ability';

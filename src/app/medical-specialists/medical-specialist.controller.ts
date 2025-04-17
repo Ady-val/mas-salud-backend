@@ -11,12 +11,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PermissionGuard } from 'app/auth/guard/permissions.guard';
-import { SessionGuard } from 'app/auth/guard/session.guard';
+import { PermissionGuard } from '@app/auth/guard/permissions.guard';
+import { SessionGuard } from '@app/auth/guard/session.guard';
 import { MedicalSpecialistsService } from './medical-specialists.service';
-import { Roles } from 'app/auth/decorators/abilities.decorator';
-import { Action } from 'common/enum/action.enum';
-import { Modules } from 'common/enum/modules.enum';
+import { Roles } from '@app/auth/decorators/abilities.decorator';
+import { Action } from '@common/enum/action.enum';
+import { Modules } from '@common/enum/modules.enum';
 import { CreateMedicalSpecialistDto } from './dto/create-medical-specialists.dto';
 import { UpdateMedicalSpecialistDto } from './dto/update-medical-specialist.dto';
 

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
-import { EProductForm, EProductUnit } from 'common/enum/products.enum';
+import { EProductForm, EProductUnit } from '@common/enum/products.enum';
 
 export class UpdateProductDto {
   @ApiProperty({

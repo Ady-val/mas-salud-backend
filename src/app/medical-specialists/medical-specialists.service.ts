@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
-import { MedicalSpecialist } from 'common/entities';
+import { MedicalSpecialist } from '@common/entities';
 import { Repository } from 'typeorm';
 import { CreateMedicalSpecialistDto } from './dto/create-medical-specialists.dto';
 import { UpdateMedicalSpecialistDto } from './dto/update-medical-specialist.dto';

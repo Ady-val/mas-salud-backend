@@ -8,10 +8,13 @@
     "target": "ES2023",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
       "@nestjs/*": ["node_modules/@nestjs/*"],
-      "*": ["node_modules/*", "src/*"]
+      "@app/*": ["app/*"],
+      "@common/*": ["common/*"],
+      "@config/*": ["config/*"],
+      "*": ["*"]
     },
     "incremental": true,
     "skipLibCheck": true,
@@ -26,6 +29,6 @@
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
   },
-  "include": ["src/**/*.ts", "migrations/**/*.ts"],
+  "include": ["src/**/*.ts", "migrations/**/*.ts", "data-source.ts"],
   "exclude": ["node_modules", "dist"]
 }

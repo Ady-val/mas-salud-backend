@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from 'app/users/users.service';
+import { UsersService } from '@app/users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { PasswordService } from './password/password.service';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { SessionService } from './sessions/session.service';
-import { HTTP_MESSAGES } from 'common/constants/http-messages.constants';
+import { HTTP_MESSAGES } from '@common/constants/http-messages.constants';
 import { CaslAbilityFactory } from './casl/casl-ability.factory';
 
 @Injectable()
@@ -48,10 +48,7 @@ export class AuthService {
     };
   }
 
-  // logout(_userId: string) {
   logout() {
-    // Implementa la lógica para el logout (por ejemplo, eliminando la sesión o invalidando el token)
-    // Como estamos usando JWT, el logout en sí no requiere cambios en el backend, ya que no mantenemos estado.
     return { message: 'Logged out successfully' };
   }
 }

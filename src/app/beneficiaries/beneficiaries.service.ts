@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Beneficiary } from '../../common/entities/beneficiaries.entity';
 import { Repository } from 'typeorm';
 import { CreateBeneficiaryDto } from './dto/create-beneficiary.dto';
-import { v5 as uuidv5 } from 'uuid';
 import { plainToInstance } from 'class-transformer';
 import { ResponseBeneficiariesDto } from './dto/benificiaries.dto';
 import { CustomHttpException } from '@common/formats/http-exception.formats';
@@ -17,6 +16,20 @@ export class BeneficiariesService {
     @InjectRepository(Beneficiary)
     private readonly beneficiaryRepository: Repository<Beneficiary>,
   ) {}
+
+  private async generateIdentificationCode(): Promise<string> {
+    let code: string;
+    let exists: Beneficiary | null;
+
+    do {
+      code = Math.floor(100000000000 + Math.random() * 900000000000).toString();
+      exists = await this.beneficiaryRepository.findOne({
+        where: { identificationCode: code },
+      });
+    } while (exists);
+
+    return code;
+  }
 
   private async findOneById(id: string): Promise<Beneficiary> {
     const beneficiary = await this.beneficiaryRepository.findOne({ where: { id } });
@@ -41,8 +54,7 @@ export class BeneficiariesService {
       );
     }
 
-    const namespace = uuidv5.URL;
-    const identificationCode = uuidv5(beneficiary.curp, namespace);
+    const identificationCode = await this.generateIdentificationCode();
 
     const data = {
       ...beneficiary,
@@ -61,7 +73,13 @@ export class BeneficiariesService {
   async findAll(
     page: number = 1,
     limit: number = 10,
-    filters?: Partial<{ name: string; lastName: string; gender: 'Male' | 'Female'; curp: string }>,
+    filters?: Partial<{
+      name: string;
+      lastName: string;
+      gender: 'Male' | 'Female';
+      curp: string;
+      identificationCode: string;
+    }>,
   ): Promise<ResponseBeneficiariesDto> {
     const query = this.beneficiaryRepository.createQueryBuilder('beneficiary');
 
@@ -76,6 +94,11 @@ export class BeneficiariesService {
     }
     if (filters?.curp) {
       query.andWhere('beneficiary.curp LIKE :curp', { curp: `${filters.curp}%` });
+    }
+    if (filters?.identificationCode) {
+      query.andWhere('beneficiary.identificationCode = :identificationCode', {
+        identificationCode: filters.identificationCode,
+      });
     }
 
     const count = await query.getCount();

@@ -43,7 +43,7 @@ export class Beneficiary {
   @Column({ default: true })
   active: boolean;
 
-  @Exclude()
+  // @Exclude()
   @Column({ unique: true })
   identificationCode: string;
 

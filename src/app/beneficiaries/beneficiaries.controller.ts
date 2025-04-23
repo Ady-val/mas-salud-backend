@@ -45,8 +45,15 @@ export class BeneficiariesController {
     @Query('lastName') lastName?: string,
     @Query('gender') gender?: 'Male' | 'Female',
     @Query('curp') curp?: string,
+    @Query('identificationCode') identificationCode?: string,
   ) {
-    return this.beneficiariesService.findAll(page, limit, { name, lastName, gender, curp });
+    return this.beneficiariesService.findAll(page, limit, {
+      name,
+      lastName,
+      gender,
+      curp,
+      identificationCode,
+    });
   }
 
   @Get(':id')

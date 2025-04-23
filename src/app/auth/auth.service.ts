@@ -48,7 +48,7 @@ export class AuthService {
     };
   }
 
-  logout() {
-    return { message: 'Logged out successfully' };
+  async logout(token: string): Promise<void> {
+    await this.sessionService.closeSession(token);
   }
 }

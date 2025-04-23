@@ -1,7 +1,7 @@
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import { Controller, Post, Body, Res, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -27,5 +27,18 @@ export class AuthController {
       name: loginResponse.name,
       rules: loginResponse.rules,
     };
+  }
+
+  @Post('logout')
+  async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const token = req.cookies['access_token'] as string | undefined;
+
+    if (token) {
+      await this.authService.logout(token);
+    }
+
+    res.clearCookie('access_token');
+
+    return { message: 'Logged out successfully' };
   }
 }

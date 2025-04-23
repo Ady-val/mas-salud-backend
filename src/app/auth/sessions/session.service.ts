@@ -40,4 +40,11 @@ export class SessionService {
 
     return session;
   }
+
+  async closeSession(token: string): Promise<void> {
+    const session = await this.findSessionByToken(token);
+    if (!session) return;
+
+    await this.sessionRepository.delete(session.id);
+  }
 }

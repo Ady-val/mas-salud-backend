@@ -16,12 +16,11 @@ import { Action } from '@common/enum/action.enum';
 import { Modules } from '@common/enum/modules.enum';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { SessionGuard } from '@app/auth/guard/session.guard';
 import { PermissionGuard } from '@app/auth/guard/permissions.guard';
 import { Roles } from '@app/auth/decorators/abilities.decorator';
 
 @ApiTags('Products')
-@UseGuards(SessionGuard, PermissionGuard)
+@UseGuards(PermissionGuard)
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}

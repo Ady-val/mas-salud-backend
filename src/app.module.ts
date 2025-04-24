@@ -15,6 +15,7 @@ import { InventoryMovementModule } from '@app/inventory/inventory-movements/inve
 import { MedicalSpecialistsModule } from '@app/medical-specialists/medical-specialists.module';
 import { ConfigModule } from '@nestjs/config';
 import { envValidationSchema } from '@config/validation';
+import { InstitutionScopeGuard } from '@app/auth/guard/institution-scope.guard';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { envValidationSchema } from '@config/validation';
   providers: [
     AuthModule,
     CaslAbilityFactory,
+    InstitutionScopeGuard,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

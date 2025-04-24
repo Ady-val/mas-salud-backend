@@ -16,14 +16,15 @@ import { CreateInventoryDto } from './dto/create-inventory.dto';
 import { ResponseInventoryDto } from './dto/find-inventories.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';
 import { UserRequest } from '@common/interfaces/api-request.interface';
-import { SessionGuard } from '@app/auth/guard/session.guard';
 import { Roles } from '@app/auth/decorators/abilities.decorator';
 import { Action } from '@common/enum/action.enum';
 import { Modules } from '@common/enum/modules.enum';
+import { PermissionGuard } from '@app/auth/guard/permissions.guard';
+import { ScopedInstitutionId } from '@common/decorators/scoped-institution-id.decorator';
 
 @ApiTags('Inventarios')
 @Controller('inventories')
-@UseGuards(SessionGuard)
+@UseGuards(PermissionGuard)
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
 
@@ -44,7 +45,7 @@ export class InventoryController {
     @Query('page') page: number,
     @Query('limit') limit: number,
     @Query('productId') productId: string,
-    @Query('institutionId') institutionId: string,
+    @ScopedInstitutionId() institutionId: string,
     @Query('name') name: string,
   ) {
     return this.inventoryService.findAll(page, limit, { productId, institutionId, name });
@@ -58,7 +59,7 @@ export class InventoryController {
     @Query('page') page: number,
     @Query('limit') limit: number,
     @Query('productId') productId: string,
-    @Query('institutionId') institutionId: string,
+    @ScopedInstitutionId() institutionId: string,
     @Query('name') name: string,
   ) {
     return this.inventoryService.getGroupedInventory(page, limit, {

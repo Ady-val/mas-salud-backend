@@ -12,6 +12,7 @@ export class TokenService {
     const payload = {
       username: user.username,
       sub: user.id,
+      institutionId: user.institutionId,
       institution: user.institution?.name,
       role: user.role,
       isAdmin: user.isAdmin,

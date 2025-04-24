@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PermissionGuard } from '@app/auth/guard/permissions.guard';
-import { SessionGuard } from '@app/auth/guard/session.guard';
 import { BeneficiariesService } from './beneficiaries.service';
 import { Roles } from '@app/auth/decorators/abilities.decorator';
 import { Action } from '@common/enum/action.enum';
@@ -21,7 +20,7 @@ import { CreateBeneficiaryDto } from './dto/create-beneficiary.dto';
 import { UpdateBeneficiaryDto } from './dto/update-beneficiary.dto';
 
 @ApiTags('Beneficiaries')
-@UseGuards(SessionGuard, PermissionGuard)
+@UseGuards(PermissionGuard)
 @Controller('beneficiaries')
 export class BeneficiariesController {
   constructor(private readonly beneficiariesService: BeneficiariesService) {}

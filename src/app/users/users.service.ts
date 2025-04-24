@@ -53,6 +53,7 @@ export class UsersService {
         'user.password',
         'user.isAdmin',
         'user.role',
+        'user.institutionId',
         'user.createdAt',
         'user.updatedAt',
         'institution.name',

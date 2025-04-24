@@ -8,7 +8,16 @@ export class TokenPayloadDto {
   sub: string;
 
   @Expose()
+  institutionId: string;
+
+  @Expose()
   institution: string;
+
+  @Expose()
+  role: string[];
+
+  @Expose()
+  isAdmin: boolean;
 
   @Expose()
   iat: number;

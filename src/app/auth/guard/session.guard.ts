@@ -59,6 +59,7 @@ export class SessionGuard implements CanActivate {
     void _iat;
     void _exp;
     request['user'] = rest;
+    request.query['institutionId'] = 'qweqweqweqwe';
 
     return true;
   }

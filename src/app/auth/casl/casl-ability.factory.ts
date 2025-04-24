@@ -23,18 +23,26 @@ export class CaslAbilityFactory {
     );
 
     can(Action.Read, Modules.Dashboard);
+    can(Action.Read, Modules.Institutions);
 
     if (user.role?.includes(Role.ADMIN) || user.isAdmin) {
       can(Action.Manage, 'all');
     }
 
     if (user.role?.includes(Role.DATA_ENTRY_OPERATOR)) {
-      can(Action.Read, Modules.Institutions);
       can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.Beneficiaries);
-      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.MedicalSpecialists);
+      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.Specialist);
       can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.Products);
       can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.InventoryMovement);
       can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.InventoryItem);
+    }
+
+    if (user.role?.includes(Role.SELLER)) {
+      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.MedicationDispensing);
+      can([Action.Read], Modules.Beneficiaries);
+      can([Action.Read], Modules.Products);
+      can([Action.Read], Modules.InventoryMovement);
+      can([Action.Read], Modules.InventoryItem);
     }
 
     return build({

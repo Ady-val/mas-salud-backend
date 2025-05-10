@@ -18,6 +18,7 @@ import { Action } from '@common/enum/action.enum';
 import { Modules } from '@common/enum/modules.enum';
 import { CreateMedicalSpecialistDto } from './dto/create-medical-specialists.dto';
 import { UpdateMedicalSpecialistDto } from './dto/update-medical-specialist.dto';
+import { ScopedInstitutionId } from '@common/decorators/scoped-institution-id.decorator';
 
 @ApiTags('MedicalSpecialists')
 @UseGuards(PermissionGuard)
@@ -42,7 +43,7 @@ export class MedicalSpecialistsController {
     @Query('limit') limit: number = 10,
     @Query('fullName') fullName?: string,
     @Query('speciality') speciality?: string,
-    @Query('institutionId') institutionId?: string,
+    @ScopedInstitutionId() institutionId?: string,
   ) {
     return this.medicalSpecialistsService.findAll(page, limit, {
       fullName,

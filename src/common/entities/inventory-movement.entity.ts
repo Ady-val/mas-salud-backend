@@ -38,16 +38,19 @@ export class InventoryMovement {
   @Column({ type: 'uuid', nullable: true })
   userId?: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'uuid', nullable: true })
+  ticketId?: string;
+
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @Column({
-    type: 'timestamp',
+    type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
 
-  @DeleteDateColumn({ type: 'timestamp', nullable: true, select: false })
+  @DeleteDateColumn({ type: 'timestamptz', nullable: true, select: false })
   deletedAt?: Date;
 }

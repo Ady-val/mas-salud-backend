@@ -24,6 +24,7 @@ export const HTTP_MESSAGES = {
   },
   INVENTORY_ITEM_ERROR: {
     NOT_FOUND: 'Inventory item not found',
+    PRODUCT_NOT_FOUND: 'Product not found in inventory',
     INSUFFICIENT_QUANTITY: 'Insufficient quantity in inventory',
   },
 };

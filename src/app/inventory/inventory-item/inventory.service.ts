@@ -13,6 +13,7 @@ import { UpdateInventoryDto } from './dto/update-inventory.dto';
 import { InventoryMovementType } from '@common/entities/inventory-movement.entity';
 import { IUserTokenInfo } from '@common/formats/user-token-info.interface';
 import { EInventoryMovementReason } from '../inventory-movements/enum/inventory-movement-reasons.enum';
+import { InventoryDataDto } from './dto/inventory-data.dto';
 
 interface GroupedRawInventory {
   productId: string;
@@ -76,11 +77,15 @@ export class InventoryService {
     return await this.findOneById(id);
   }
 
-  async findAll(
-    page: number = 1,
-    limit: number = 10,
-    filters?: Partial<{ productId: string; institutionId: string; name: string }>,
-  ): Promise<ResponseInventoryDto> {
+  async findAll({
+    page = 1,
+    limit = 10,
+    filters,
+  }: {
+    page?: number;
+    limit?: number;
+    filters?: Partial<{ productId: string; institutionId: string; name: string; barcode: string }>;
+  }): Promise<ResponseInventoryDto> {
     const query = this.inventoryRepository
       .createQueryBuilder('inventory')
       .leftJoinAndSelect('inventory.product', 'product')
@@ -109,6 +114,10 @@ export class InventoryService {
 
     if (filters?.name) {
       query.andWhere('product.name ILIKE :name', { name: `%${filters.name}%` });
+    }
+
+    if (filters?.barcode) {
+      query.andWhere('inventory.barcode = :barcode', { barcode: `${filters.barcode}` });
     }
 
     const count = await query.getCount();
@@ -228,6 +237,29 @@ export class InventoryService {
       limit,
       data: result,
     });
+  }
+
+  async findProductByBarcode({
+    barcode,
+    institutionId,
+  }: {
+    barcode: string;
+    institutionId?: string;
+  }): Promise<InventoryDataDto> {
+    const { data } = await this.findAll({ filters: { barcode, institutionId } });
+    const [inventory] = data;
+
+    if (!inventory) {
+      throw CustomHttpException(
+        {
+          field: 'barcode',
+          error: HTTP_MESSAGES.INVENTORY_ITEM_ERROR.PRODUCT_NOT_FOUND,
+        },
+        HTTP_STATUS.CLIENT_ERROR.NOT_FOUND,
+      );
+    }
+
+    return inventory;
   }
 
   async update(id: string, dto: UpdateInventoryDto, user: IUserTokenInfo): Promise<InventoryItem> {

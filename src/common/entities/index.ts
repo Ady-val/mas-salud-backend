@@ -6,6 +6,8 @@ import { User } from './users.entity';
 import { InventoryItem } from './inventory.entity';
 import { InventoryMovement } from './inventory-movement.entity';
 import { MedicalSpecialist } from './medical-specialist.entity';
+import { Ticket } from './tickets.entity';
+import { TicketItem } from './ticket-items.entity';
 
 export {
   Beneficiary,
@@ -16,6 +18,8 @@ export {
   InventoryItem,
   InventoryMovement,
   MedicalSpecialist,
+  Ticket,
+  TicketItem,
 };
 
 const entities = [
@@ -27,6 +31,8 @@ const entities = [
   InventoryItem,
   InventoryMovement,
   MedicalSpecialist,
+  Ticket,
+  TicketItem,
 ];
 
 export { entities };

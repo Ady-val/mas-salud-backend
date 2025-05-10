@@ -16,6 +16,7 @@ import { MedicalSpecialistsModule } from '@app/medical-specialists/medical-speci
 import { ConfigModule } from '@nestjs/config';
 import { envValidationSchema } from '@config/validation';
 import { InstitutionScopeGuard } from '@app/auth/guard/institution-scope.guard';
+import { TicketModule } from '@app/ticket/ticket.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { InstitutionScopeGuard } from '@app/auth/guard/institution-scope.guard';
     InventoryModule,
     InventoryMovementModule,
     MedicalSpecialistsModule,
+    TicketModule,
   ],
   controllers: [AppController],
   providers: [

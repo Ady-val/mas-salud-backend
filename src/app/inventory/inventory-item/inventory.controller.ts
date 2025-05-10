@@ -48,7 +48,11 @@ export class InventoryController {
     @ScopedInstitutionId() institutionId: string,
     @Query('name') name: string,
   ) {
-    return this.inventoryService.findAll(page, limit, { productId, institutionId, name });
+    return this.inventoryService.findAll({
+      page,
+      limit,
+      filters: { productId, institutionId, name },
+    });
   }
 
   @Get('grouped')
@@ -67,6 +71,18 @@ export class InventoryController {
       institutionId,
       name,
     });
+  }
+
+  @Get('barcode/:barcode')
+  @ApiOperation({ summary: 'Obtener un inventario por código de barras' })
+  @ApiResponse({ status: 200, description: 'Inventario encontrado', type: ResponseInventoryDto })
+  @ApiResponse({ status: 404, description: 'Inventario no encontrado' })
+  @Roles({ action: Action.Read, subject: Modules.InventoryItem })
+  async findByBarcode(
+    @Param('barcode') barcode: string,
+    @ScopedInstitutionId() institutionId: string,
+  ) {
+    return this.inventoryService.findProductByBarcode({ barcode, institutionId });
   }
 
   @Get(':id')

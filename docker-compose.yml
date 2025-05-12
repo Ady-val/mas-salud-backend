@@ -29,7 +29,7 @@ services:
       NODE_ENV: production
       PORT: ${PORT}
       DB_TYPE: ${DB_TYPE}
-      DB_HOST: ${DB_HOST}
+      DB_HOST: db
       DB_PORT: ${DB_PORT}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}

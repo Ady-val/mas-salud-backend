@@ -3,11 +3,11 @@ import { CaslAbilityFactory } from '@app/auth/casl/casl-ability.factory';
 import { SessionGuard } from '@app/auth/guard/session.guard';
 import { UserRequest } from '@common/interfaces/api-request.interface';
 
-@UseGuards(SessionGuard)
 @Controller()
 export class AppController {
   constructor(private readonly caslAbilityFactory: CaslAbilityFactory) {}
 
+  @UseGuards(SessionGuard)
   @Get('me')
   getHello(@Req() req: UserRequest): any {
     const user = req.user;
@@ -21,6 +21,13 @@ export class AppController {
       username: user.username,
       institution: user.institution,
       permissions: rules,
+    };
+  }
+
+  @Get('test')
+  getTest(): any {
+    return {
+      message: 'Test endpoint',
     };
   }
 }

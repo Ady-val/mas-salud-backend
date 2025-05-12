@@ -1,0 +1,11 @@
+node_modules
+dist
+npm-debug.log
+.env
+docker-compose.yml
+Dockerfile
+*.tgz
+coverage
+*.tsbuildinfo
+.idea
+.vscode

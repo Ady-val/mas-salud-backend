@@ -39,7 +39,7 @@ export class CaslAbilityFactory {
 
     if (user.role?.includes(Role.SELLER)) {
       can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.MedicationDispensing);
-      can([Action.Read], Modules.Beneficiaries);
+      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.Beneficiaries);
       can([Action.Read], Modules.Products);
       can([Action.Read], Modules.InventoryMovement);
       can([Action.Read], Modules.InventoryItem);

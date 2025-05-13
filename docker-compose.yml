@@ -33,7 +33,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile 
     image: mas_salud_backend:latest
     container_name: mas_salud_app
     depends_on:

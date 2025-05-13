@@ -2,7 +2,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateInstitutions1747072039332 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.manager.insert('institutions', [
+    await queryRunner.manager.insert('institution', [
       {
         id: 'cca04fd3-d4cd-4625-8765-e8d111961220',
         name: 'DIF Municipal',

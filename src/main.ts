@@ -1,8 +1,3 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { BadRequestException, Logger, ValidationError, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from 'app.module';
@@ -13,8 +8,8 @@ async function bootstrap() {
 
   const allowedOrigins =
     process.env.NODE_ENV === 'production'
-      ? ['https://www.massalud.com']
-      : ['http://localhost:3000'];
+      ? ['http://localhost', 'http://localhost:3000', 'http://adal.tailba64d6.ts.net']
+      : ['http://localhost:3000', 'http://adal.tailba64d6.ts.net'];
 
   app.enableCors({
     origin: allowedOrigins,

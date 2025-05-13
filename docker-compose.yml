@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  frontend:
+    build:
+      context: ../mas-salud
+      dockerfile: Dockerfile
+    image: mas_salud_frontend:latest
+    container_name: mas_salud_frontend
+    ports:
+      - "80:80"
+    environment:
+      NEXT_PUBLIC_API_URL: ${ENV_API}
+    depends_on:
+      - app
+    networks:
+      - app-network
+
   db:
     image: postgres:15
     container_name: ${DB_CONTAINER_NAME}

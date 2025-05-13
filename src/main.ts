@@ -12,7 +12,7 @@ async function bootstrap() {
           'http://localhost',
           'http://localhost:3000',
           'http://adal.tailba64d6.ts.net',
-          'mas-salud.tailba64d6.ts.net',
+          'http://mas-salud.tailba64d6.ts.net',
         ]
       : ['http://localhost:3000', 'http://adal.tailba64d6.ts.net'];
 

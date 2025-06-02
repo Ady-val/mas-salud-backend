@@ -5,9 +5,11 @@ import {
   DeleteDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Institution } from './institutions.entity';
+import { UserRole } from './user-roles.entity';
 
 @Entity()
 export class User {
@@ -29,9 +31,6 @@ export class User {
   @Column({ nullable: true, name: 'idInstitution' })
   institutionId: string | null;
 
-  @Column({ type: 'json', nullable: true })
-  role?: string[];
-
   @Column()
   isAdmin: boolean;
 
@@ -41,6 +40,9 @@ export class User {
   })
   @JoinColumn({ name: 'idInstitution' })
   institution: Institution | null;
+
+  @OneToMany(() => UserRole, (userRole) => userRole.user)
+  userRoles: UserRole[];
 
   @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

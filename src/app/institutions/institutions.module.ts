@@ -4,13 +4,13 @@ import { Institution } from '../../common/entities/institutions.entity';
 import { InstitutionsController } from './institutions.controller';
 import { InstitutionsService } from './institutions.service';
 import { AuthModule } from '../auth/auth.module';
-import { CaslAbilityFactory } from '@app/auth/casl/casl-ability.factory';
 import { SessionMiddleware } from '@common/middlewares/session.middleware';
+import { CaslModule } from '@app/auth/casl/casl.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Institution]), AuthModule],
+  imports: [TypeOrmModule.forFeature([Institution]), AuthModule, CaslModule],
   controllers: [InstitutionsController],
-  providers: [InstitutionsService, CaslAbilityFactory],
+  providers: [InstitutionsService],
 })
 export class InstitutionsModule {
   configure(consumer: MiddlewareConsumer) {

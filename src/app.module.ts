@@ -17,6 +17,8 @@ import { ConfigModule } from '@nestjs/config';
 import { envValidationSchema } from '@config/validation';
 import { InstitutionScopeGuard } from '@app/auth/guard/institution-scope.guard';
 import { TicketModule } from '@app/ticket/ticket.module';
+import { RolesModule } from '@app/roles/roles.module';
+import { CaslModule } from '@app/auth/casl/casl.module';
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { TicketModule } from '@app/ticket/ticket.module';
     TypeOrmModule.forRoot(AppDataSource.options),
     AuthModule,
     UsersModule,
+    RolesModule,
     InstitutionsModule,
     BeneficiariesModule,
     ProductsModule,
@@ -34,6 +37,7 @@ import { TicketModule } from '@app/ticket/ticket.module';
     InventoryMovementModule,
     MedicalSpecialistsModule,
     TicketModule,
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [

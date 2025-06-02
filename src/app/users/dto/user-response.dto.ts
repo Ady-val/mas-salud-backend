@@ -1,6 +1,9 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 
-export class UserResponse {
+export class UserProfile {
+  @Expose()
+  id: string;
+
   @Expose()
   username: string;
 
@@ -8,23 +11,50 @@ export class UserResponse {
   name: string;
 
   @Expose()
+  role: string;
+
+  @Expose()
+  roleId: string;
+
+  @Expose()
+  institution: string | null;
+
+  @Expose()
+  institutionId: string;
+
+  @Expose()
+  isAdmin: boolean;
+
+  @Expose()
   createdAt: Date;
 
   @Expose()
   updatedAt: Date;
-
-  @Expose({ name: 'institution' })
-  institutionName: string | null;
-
-  @Exclude()
-  id: string;
-
-  @Exclude()
-  institutionId: string;
 
   @Exclude()
   password: string;
 
   @Exclude()
   deletedAt: Date | null;
+
+  @Exclude()
+  userRoles: any[];
+}
+
+export class UsersResponse {
+  @Expose()
+  count: number;
+
+  @Expose()
+  page: number;
+
+  @Expose()
+  totalPages: number;
+
+  @Expose()
+  limit: number;
+
+  @Expose()
+  @Type(() => UserProfile)
+  data: UserProfile[];
 }

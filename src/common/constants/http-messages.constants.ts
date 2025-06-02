@@ -27,4 +27,10 @@ export const HTTP_MESSAGES = {
     PRODUCT_NOT_FOUND: 'Product not found in inventory',
     INSUFFICIENT_QUANTITY: 'Insufficient quantity in inventory',
   },
+  ROLES_ERROR: {
+    ALREADY_EXISTS: 'Role already exists',
+    NOT_FOUND: 'Role not found',
+    NAME_ALREADY_EXISTS: 'Role with this name already exists',
+    CANNOT_DELETE_ROLE: 'Cannot delete role',
+  },
 };

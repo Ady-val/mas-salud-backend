@@ -14,7 +14,7 @@ export class TokenService {
       sub: user.id,
       institutionId: user.institutionId,
       institution: user.institution?.name,
-      role: user.role,
+      role: [],
       isAdmin: user.isAdmin,
     };
     return this.jwt.sign(payload);

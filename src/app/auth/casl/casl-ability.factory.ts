@@ -1,57 +1,37 @@
-import {
-  AbilityBuilder,
-  AbilityClass,
-  ExtractSubjectType,
-  InferSubjects,
-  PureAbility,
-} from '@casl/ability';
+import { AbilityBuilder, createMongoAbility, InferSubjects, MongoAbility } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
 import { User } from '@common/entities/users.entity';
 import { Action } from '@common/enum/action.enum';
 import { Modules } from '@common/enum/modules.enum';
-import { Role } from '@common/enum/role.enum';
 import { IUserTokenInfo } from '@common/formats/user-token-info.interface';
+import { RolesService } from '@app/roles/roles.service';
 
 export type Subjects = InferSubjects<typeof User> | Modules | 'all';
-export type AppAbility = PureAbility<[Action, Subjects]>;
+export type AppAbility = MongoAbility<[Action, Subjects]>;
 
 @Injectable()
 export class CaslAbilityFactory {
-  createForUser(user: IUserTokenInfo): AppAbility {
-    const { can, build } = new AbilityBuilder<PureAbility<[Action, Subjects]>>(
-      PureAbility as AbilityClass<AppAbility>,
-    );
+  constructor(private readonly rolesService: RolesService) {}
 
-    can(Action.Read, Modules.Dashboard);
-    can(Action.Read, Modules.Institutions);
+  async createForUser(user: IUserTokenInfo): Promise<MongoAbility> {
+    const { can, build } = new AbilityBuilder(createMongoAbility);
 
-    if (user.role?.includes(Role.ADMIN) || user.isAdmin) {
-      can(Action.Manage, 'all');
-    }
+    const { permissions } = await this.rolesService.getRoleByUserId(user.sub);
 
-    if (user.role?.includes(Role.DATA_ENTRY_OPERATOR)) {
-      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.Beneficiaries);
-      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.Specialist);
-      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.Products);
-      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.InventoryMovement);
-      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.InventoryItem);
-    }
-
-    if (user.role?.includes(Role.SELLER)) {
-      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.MedicationDispensing);
-      can([Action.Read, Action.Create, Action.Update, Action.Delete], Modules.Beneficiaries);
-      can([Action.Read], Modules.Products);
-      can([Action.Read], Modules.InventoryMovement);
-      can([Action.Read], Modules.InventoryItem);
-    }
-
-    return build({
-      detectSubjectType: (item) => item.constructor as ExtractSubjectType<Subjects>,
+    permissions.forEach(({ module: mod, actions, isGlobal }) => {
+      can(actions, mod, { isGlobal });
     });
+
+    try {
+      return build();
+    } catch (error) {
+      console.error('Error building ability:', error);
+      throw new Error('Failed to build CASL ability');
+    }
   }
 
-  getRulesForUser(user: IUserTokenInfo): AppAbility['rules'] {
-    const ability = this.createForUser(user);
+  async getRulesForUser(user: IUserTokenInfo): Promise<AppAbility['rules']> {
+    const ability = (await this.createForUser(user)) as AppAbility;
     return ability.rules;
   }
 }

@@ -4,13 +4,13 @@ import { Product } from '../../common/entities/products.entity';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { AuthModule } from '@app/auth/auth.module';
-import { CaslAbilityFactory } from '@app/auth/casl/casl-ability.factory';
 import { SessionMiddleware } from '@common/middlewares/session.middleware';
+import { CaslModule } from '@app/auth/casl/casl.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product]), AuthModule],
+  imports: [TypeOrmModule.forFeature([Product]), AuthModule, CaslModule],
   controllers: [ProductsController],
-  providers: [ProductsService, CaslAbilityFactory],
+  providers: [ProductsService],
 })
 export class ProductsModule {
   configure(consumer: MiddlewareConsumer) {

@@ -7,11 +7,19 @@ import { PasswordModule } from '@app/auth/password/password.module';
 import { TokenModule } from '@app/auth/token/token.module';
 import { SessionModule } from '@app/auth/sessions/session.module';
 import { CaslAbilityFactory } from '@app/auth/casl/casl-ability.factory';
+import { UserRole } from '@common/entities/user-roles.entity';
+import { RolesModule } from '@app/roles/roles.module';
+import { Institution } from '@common/entities';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), PasswordModule, TokenModule, SessionModule],
+  imports: [
+    TypeOrmModule.forFeature([User, UserRole, Institution]),
+    PasswordModule,
+    TokenModule,
+    SessionModule,
+  ],
   controllers: [UsersController],
-  providers: [UsersService, CaslAbilityFactory],
-  exports: [UsersService],
+  providers: [UsersService, RolesModule, CaslAbilityFactory],
+  exports: [UsersService, TypeOrmModule],
 })
 export class UsersModule {}

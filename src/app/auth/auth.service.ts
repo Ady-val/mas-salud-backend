@@ -31,12 +31,12 @@ export class AuthService {
 
     const { token: accessToken } = await this.sessionService.createSession(user);
 
-    const rules = this.caslAbilityFactory.getRulesForUser({
+    const rules = await this.caslAbilityFactory.getRulesForUser({
       username: user.username,
       sub: user.id,
       institutionId: user.institutionId ?? '',
       institution: user.institution?.name ?? '',
-      role: user.role ?? [],
+      role: [],
       isAdmin: user.isAdmin,
     });
 

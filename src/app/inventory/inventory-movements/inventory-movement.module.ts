@@ -4,13 +4,13 @@ import { AuthModule } from '@app/auth/auth.module';
 import { InventoryItem, InventoryMovement } from '@common/entities';
 import { InventoryMovementController } from './inventory-movement.controller';
 import { InventoryMovementService } from './inventory-movement.service';
-import { CaslAbilityFactory } from '@app/auth/casl/casl-ability.factory';
 import { SessionMiddleware } from '@common/middlewares/session.middleware';
+import { CaslModule } from '@app/auth/casl/casl.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([InventoryMovement, InventoryItem]), AuthModule],
+  imports: [TypeOrmModule.forFeature([InventoryMovement, InventoryItem]), AuthModule, CaslModule],
   controllers: [InventoryMovementController],
-  providers: [InventoryMovementService, CaslAbilityFactory],
+  providers: [InventoryMovementService],
   exports: [InventoryMovementService],
 })
 export class InventoryMovementModule {

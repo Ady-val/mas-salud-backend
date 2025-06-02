@@ -9,13 +9,17 @@ export class AppController {
 
   @UseGuards(SessionGuard)
   @Get('me')
-  getHello(@Req() req: UserRequest): any {
+  async getHello(@Req() req: UserRequest): Promise<{
+    username: string;
+    institution: string;
+    permissions: any;
+  }> {
     const user = req.user;
     if (!user) {
       throw new Error('User not found');
     }
 
-    const rules = this.caslAbilityFactory.getRulesForUser(user);
+    const rules = await this.caslAbilityFactory.getRulesForUser(user);
 
     return {
       username: user.username,

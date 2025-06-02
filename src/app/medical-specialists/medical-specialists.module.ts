@@ -4,13 +4,13 @@ import { AuthModule } from '@app/auth/auth.module';
 import { MedicalSpecialist } from '@common/entities';
 import { MedicalSpecialistsController } from './medical-specialist.controller';
 import { MedicalSpecialistsService } from './medical-specialists.service';
-import { CaslAbilityFactory } from '@app/auth/casl/casl-ability.factory';
 import { SessionMiddleware } from '@common/middlewares/session.middleware';
+import { CaslModule } from '@app/auth/casl/casl.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MedicalSpecialist]), AuthModule],
+  imports: [TypeOrmModule.forFeature([MedicalSpecialist]), AuthModule, CaslModule],
   controllers: [MedicalSpecialistsController],
-  providers: [MedicalSpecialistsService, CaslAbilityFactory],
+  providers: [MedicalSpecialistsService],
 })
 export class MedicalSpecialistsModule {
   configure(consumer: MiddlewareConsumer) {

@@ -4,13 +4,17 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TicketsController } from './ticket.controller';
 import { TicketsService } from './ticket.service';
-import { CaslAbilityFactory } from '@app/auth/casl/casl-ability.factory';
 import { SessionMiddleware } from '@common/middlewares/session.middleware';
+import { CaslModule } from '@app/auth/casl/casl.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Ticket, TicketItem, InventoryMovement]), AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([Ticket, TicketItem, InventoryMovement]),
+    AuthModule,
+    CaslModule,
+  ],
   controllers: [TicketsController],
-  providers: [TicketsService, CaslAbilityFactory],
+  providers: [TicketsService],
 })
 export class TicketModule {
   configure(consumer: MiddlewareConsumer) {

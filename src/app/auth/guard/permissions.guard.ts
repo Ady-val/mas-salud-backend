@@ -11,7 +11,7 @@ export class PermissionGuard implements CanActivate {
     private caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const rules = this.reflector.get<RequiredRule[]>(CHECK_ABILITY, context.getHandler());
     if (!rules) {
       return true;
@@ -20,10 +20,11 @@ export class PermissionGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<UserRequest>();
     const user = request.user;
 
-    const ability = this.caslAbilityFactory.createForUser(user);
+    const ability = await this.caslAbilityFactory.createForUser(user);
 
     for (const rule of rules) {
-      if (!ability.can(rule.action, rule.subject)) {
+      const can = ability.can(rule.action, rule.subject);
+      if (!can) {
         throw new ForbiddenException('Access Denied');
       }
     }

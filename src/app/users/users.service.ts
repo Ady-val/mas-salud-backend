@@ -6,28 +6,50 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PasswordService } from '@app/auth/password/password.service';
 import { plainToInstance } from 'class-transformer';
-import { UserResponse } from './dto/user-response.dto';
+import { UserProfile, UsersResponse } from './dto/user-response.dto';
+import { RolesService } from '@app/roles/roles.service';
+import { UserRole } from '@common/entities/user-roles.entity';
+import { Institution } from '@common/entities';
+import { IUserTokenInfo } from '@common/formats/user-token-info.interface';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly passwordService: PasswordService,
 
+    private readonly rolesService: RolesService,
+
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+
+    @InjectRepository(UserRole)
+    private readonly userRoleRepository: Repository<UserRole>,
+
+    @InjectRepository(Institution)
+    private readonly institutionRepository: Repository<Institution>,
   ) {}
 
-  private async getUserById(id: string): Promise<UserResponse> {
+  private async getUserById(id: string): Promise<UserProfile> {
     const user = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.institution', 'institution')
+      .leftJoinAndSelect('user.userRoles', 'userRoles')
+      .leftJoinAndSelect('userRoles.role', 'role')
       .where('user.id = :id', { id })
       .select([
+        'user.id',
         'user.username',
         'user.name',
         'user.createdAt',
         'user.updatedAt',
+        'user.institutionId',
+        'user.isAdmin',
+        'institution.id',
         'institution.name',
+        'userRoles.id',
+        'role.id',
+        'role.name',
+        'role.isGlobal',
       ])
       .getOne();
 
@@ -35,9 +57,12 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    return plainToInstance(UserResponse, {
+    return plainToInstance(UserProfile, {
       ...user,
-      institutionName: user.institution ? user.institution.name : null,
+      institution: user.institution ? user.institution.name : null,
+      institutionId: user.institution ? user.institution.id : null,
+      role: user.userRoles[0]?.role.name,
+      roleId: user.userRoles[0]?.role.id,
     });
   }
 
@@ -52,7 +77,6 @@ export class UsersService {
         'user.name',
         'user.password',
         'user.isAdmin',
-        'user.role',
         'user.institutionId',
         'user.createdAt',
         'user.updatedAt',
@@ -61,7 +85,7 @@ export class UsersService {
       .getOne();
   }
 
-  async create(createUserDto: CreateUserDto): Promise<UserResponse> {
+  async create(createUserDto: CreateUserDto): Promise<UserProfile> {
     const userExist = await this.getUserByUsername(createUserDto.username);
     if (userExist) {
       throw new ConflictException('User already exists');
@@ -75,42 +99,104 @@ export class UsersService {
       name: createUserDto.name,
       isAdmin: false,
       institutionId: createUserDto.institutionId,
-      role: createUserDto.role,
     });
 
+    const role = await this.rolesService.getRoleById(createUserDto.roleId);
+    if (!role) {
+      throw new NotFoundException('Role not found');
+    }
+
     const savedUser = await this.userRepository.save(user);
+
+    const userRole = this.userRoleRepository.create({
+      user: savedUser,
+      role,
+    });
+
+    await this.userRoleRepository.save(userRole);
     return this.getUserById(savedUser.id);
   }
 
-  async findAll(): Promise<UserResponse[]> {
-    const users = await this.userRepository
+  async findAll({
+    page = 1,
+    limit = 10,
+    name,
+    username,
+    institutionId,
+  }: {
+    page?: number;
+    limit?: number;
+    name?: string;
+    username?: string;
+    institutionId?: string;
+  }): Promise<UsersResponse> {
+    const query = this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.institution', 'institution')
+      .leftJoinAndSelect('user.userRoles', 'userRoles')
+      .leftJoinAndSelect('userRoles.role', 'role')
       .select([
+        'user.id',
         'user.username',
         'user.name',
+        'user.institutionId',
         'user.createdAt',
         'user.updatedAt',
         'institution.name',
-      ])
+        'userRoles.id',
+        'role.id',
+        'role.name',
+        'role.isGlobal',
+      ]);
+
+    if (username) {
+      query.andWhere('user.username LIKE :username', { username: `${username}%` });
+    }
+    if (name) {
+      query.andWhere('user.name LIKE :name', { name: `${name}%` });
+    }
+    if (institutionId) {
+      query.andWhere('user.institutionId = :institutionId', { institutionId });
+    }
+
+    const count = await query.getCount();
+    const totalPages = Math.ceil(count / limit);
+
+    const data = await query
+      .orderBy('user.createdAt', 'ASC')
+      .skip((page - 1) * limit)
+      .take(limit)
       .getMany();
 
-    return users.map((user) =>
-      plainToInstance(UserResponse, {
+    return plainToInstance(UsersResponse, {
+      count,
+      page,
+      totalPages,
+      limit,
+      data: data.map((user) => ({
         ...user,
-        institutionName: user.institution ? user.institution.name : null,
-      }),
-    );
+        institution: user.institution ? user.institution.name : null,
+        role: user.userRoles[0]?.role.name,
+        roleId: user.userRoles[0]?.role.id,
+      })),
+    });
   }
 
-  async findOne(id: string): Promise<UserResponse> {
+  async findOne(id: string): Promise<UserProfile> {
     return this.getUserById(id);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+    userProfile: IUserTokenInfo,
+  ): Promise<UserProfile> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
+    }
+    if (user.isAdmin && !userProfile.isAdmin) {
+      throw new ConflictException('Cannot update admin user');
     }
     if (updateUserDto.username) {
       const userExists = await this.getUserByUsername(updateUserDto.username);
@@ -126,21 +212,53 @@ export class UsersService {
       throw new ConflictException('No changes provided');
     }
     if (updateUserDto.institutionId) {
-      const institution = await this.userRepository
-        .createQueryBuilder('institution')
-        .where('institution.id = :id', { id: updateUserDto.institutionId })
-        .getOne();
+      const institution = await this.institutionRepository.findOne({
+        where: { id: updateUserDto.institutionId },
+      });
       if (!institution) {
         throw new NotFoundException('Institution not found');
       }
     }
 
-    this.userRepository.merge(user, updateUserDto);
-    return await this.userRepository.save(user);
+    if (updateUserDto.roleId) {
+      const role = await this.rolesService.getRoleById(updateUserDto.roleId);
+      if (!role) {
+        throw new NotFoundException('Role not found');
+      }
+
+      const userRoleExist = await this.userRoleRepository.find({
+        where: { user: { id: user.id } },
+      });
+
+      if (userRoleExist.length > 0) {
+        await this.userRoleRepository.remove(userRoleExist);
+      }
+
+      const userRole = this.userRoleRepository.create({
+        user,
+        role,
+      });
+      await this.userRoleRepository.save(userRole);
+    }
+
+    this.userRepository.merge(user, {
+      name: updateUserDto.name,
+      username: updateUserDto.username,
+      password: updateUserDto.password,
+      institutionId: updateUserDto.institutionId,
+    });
+    await this.userRepository.save(user);
+
+    return this.getUserById(user.id);
   }
 
   async remove(id: string): Promise<void> {
-    await this.getUserById(id);
+    const user = await this.getUserById(id);
+
+    if (user.isAdmin) {
+      throw new ConflictException('Cannot delete admin user');
+    }
+
     await this.userRepository.softDelete(id);
   }
 }

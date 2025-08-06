@@ -13,7 +13,17 @@ export class SessionMiddleware implements NestMiddleware {
   ) {}
 
   private extractTokenFromHeader(req: UserRequest): string | null {
-    const access_token = (req.cookies as Record<string, string | undefined>)?.['access_token'];
+    let access_token: string | undefined;
+    access_token = (req.cookies as Record<string, string | undefined>)?.['access_token'];
+
+    if (!access_token && req.headers.authorization) {
+      const authHeader = req.headers.authorization.split(' ');
+      if (authHeader.length === 2 && authHeader[0] === 'Bearer') {
+        access_token = authHeader[1];
+      } else {
+        return null;
+      }
+    }
     return access_token ?? null;
   }
 

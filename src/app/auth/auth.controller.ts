@@ -11,21 +11,22 @@ export class AuthController {
   async login(
     @Body()
     loginDto: LoginDto,
-    @Res({ passthrough: true }) res: Response,
+    // @Res({ passthrough: true }) res: Response,
   ) {
     const loginResponse = await this.authService.login(loginDto);
 
-    res.cookie('access_token', loginResponse.accessToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-    });
+    // res.cookie('access_token', loginResponse.accessToken, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   sameSite: 'lax',
+    // });
 
     return {
       username: loginResponse.username,
       institution: loginResponse.institution,
       name: loginResponse.name,
       rules: loginResponse.rules,
+      accessToken: loginResponse.accessToken,
     };
   }
 

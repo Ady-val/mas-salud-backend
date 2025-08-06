@@ -14,12 +14,18 @@ async function bootstrap() {
           'http://adal.tailba64d6.ts.net',
           'http://mas-salud.tailba64d6.ts.net',
         ]
-      : ['http://localhost:3000', 'http://adal.tailba64d6.ts.net'];
+      : [
+          'http://localhost',
+          'http://localhost:3000',
+          'http://adal.tailba64d6.ts.net',
+          'http://mas-salud.tailba64d6.ts.net',
+        ];
 
   app.enableCors({
     origin: allowedOrigins,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
+    exposedHeaders: ['Set-Cookie'],
   });
 
   app.use(cookieParser());

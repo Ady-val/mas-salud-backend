@@ -17,6 +17,9 @@ export const HTTP_MESSAGES = {
   BENEFICIARIES_ERROR: {
     CURP_EXISTS: 'Beneficiary with this CURP already exists',
     CURP_NOT_FOUND: 'Beneficiary with this CURP not found',
+    FILE_NOT_UPLOADED: 'File not uploaded',
+    INVALID_FILE_TYPE: 'Invalid file type',
+    FILE_TOO_LARGE: 'File size exceeds the limit',
   },
   PRODUCTS_ERROR: {
     ALREADY_EXISTS: 'Product already exists',

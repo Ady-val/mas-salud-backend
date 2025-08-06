@@ -48,6 +48,14 @@ export class Beneficiary {
   identificationCode: string;
 
   @Exclude()
+  @Column({ type: 'bytea', nullable: true })
+  profilePicture?: Buffer;
+
+  @Exclude()
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  profilePictureMimeType?: string;
+
+  @Exclude()
   @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 

@@ -9,6 +9,8 @@ import { CustomHttpException } from '@common/formats/http-exception.formats';
 import { HTTP_MESSAGES } from '@common/constants/http-messages.constants';
 import { HTTP_STATUS } from '@common/constants/http-status.constants';
 import { UpdateBeneficiaryDto } from './dto/update-beneficiary.dto';
+import { fileTypeFromBuffer } from 'file-type';
+import { BeneficiaryByIdDto } from './dto/beneficiary-by-id.dto';
 
 @Injectable()
 export class BeneficiariesService {
@@ -66,8 +68,12 @@ export class BeneficiariesService {
     return plainToInstance(Beneficiary, savedBeneficiary);
   }
 
-  async findOne(id: string): Promise<Beneficiary> {
-    return await this.findOneById(id);
+  async findOne(id: string): Promise<BeneficiaryByIdDto> {
+    const beneficiary = await this.beneficiaryRepository.findOne({ where: { id } });
+    if (!beneficiary) {
+      throw new NotFoundException('Beneficiary not found');
+    }
+    return plainToInstance(BeneficiaryByIdDto, beneficiary);
   }
 
   async findAll(
@@ -146,5 +152,35 @@ export class BeneficiariesService {
   async remove(id: string): Promise<void> {
     const beneficiary = await this.findOneById(id);
     await this.beneficiaryRepository.softRemove(beneficiary);
+  }
+
+  async uploadProfilePicture(id: string, file: Express.Multer.File): Promise<void> {
+    const beneficiary = await this.findOneById(id);
+
+    const type = await fileTypeFromBuffer(file.buffer);
+    if (!type || type.mime !== 'image/jpeg') {
+      throw CustomHttpException(
+        {
+          field: 'profilePicture',
+          error: HTTP_MESSAGES.BENEFICIARIES_ERROR.INVALID_FILE_TYPE,
+        },
+        HTTP_STATUS.CLIENT_ERROR.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    if (file.size > 2.5 * 1024 * 1024) {
+      throw CustomHttpException(
+        {
+          field: 'profilePicture',
+          error: HTTP_MESSAGES.BENEFICIARIES_ERROR.FILE_TOO_LARGE,
+        },
+        HTTP_STATUS.CLIENT_ERROR.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    beneficiary.profilePicture = file.buffer;
+    beneficiary.profilePictureMimeType = type.mime;
+
+    await this.beneficiaryRepository.save(beneficiary);
   }
 }

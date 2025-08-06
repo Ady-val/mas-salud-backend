@@ -1,14 +1,20 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseUUIDPipe,
   Patch,
   Post,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PermissionGuard } from '@app/auth/guard/permissions.guard';
@@ -18,6 +24,7 @@ import { Action } from '@common/enum/action.enum';
 import { Modules } from '@common/enum/modules.enum';
 import { CreateBeneficiaryDto } from './dto/create-beneficiary.dto';
 import { UpdateBeneficiaryDto } from './dto/update-beneficiary.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Beneficiaries')
 @UseGuards(PermissionGuard)
@@ -81,5 +88,26 @@ export class BeneficiariesController {
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     await this.beneficiariesService.remove(id);
     return { message: 'Beneficiary deleted' };
+  }
+
+  @Post(':id/image')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadImage(
+    @Param('id') id: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({ fileType: 'image/jpeg' }),
+          new MaxFileSizeValidator({ maxSize: 2_621_440 }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+
+    return this.beneficiariesService.uploadProfilePicture(id, file);
   }
 }

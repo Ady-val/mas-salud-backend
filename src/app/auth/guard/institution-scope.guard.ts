@@ -15,9 +15,6 @@ export class InstitutionScopeGuard implements CanActivate {
       return true;
     }
 
-    console.log('User:', user.institutionId);
-    console.log('Request:', request);
-
     request.query['institutionId'] = user.institutionId;
 
     return true;
